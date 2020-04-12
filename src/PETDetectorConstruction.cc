@@ -240,7 +240,7 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
   G4double phi = imod*dPhi;
   G4int Bx = (std::cos(phi))*(ring_R1+0.5*block_dz);
   G4int By =  (std::sin(phi))*(ring_R1+0.5*block_dz);
-  G4int ODx = (ring_R1+0.5*block_dz-1*mm);
+  G4int ODx = (ring_R1+0.5*block_dz+1*mm);
   G4int ODy =  (std::sin(phi))*(ring_R1+block_dz);
   G4int IDx = (ring_R1-0.5*block_dz+1*mm);
   G4int IDy =  (std::sin(phi))*(ring_R1-0.5*block_dz);
