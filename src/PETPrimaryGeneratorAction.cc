@@ -1,3 +1,4 @@
+//Kyle Klein
 #include "PETPrimaryGeneratorAction.hh"
 
 PETPrimaryGeneratorAction::PETPrimaryGeneratorAction() : G4VUserPrimaryGeneratorAction(), fParticleGun(0) {
