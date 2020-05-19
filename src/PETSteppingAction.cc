@@ -1,5 +1,5 @@
 //
-// Created by Dung Phan on 3/19/18.
+// Dung Phan, Kyle Klein 
 //
 
 #include "G4Run.hh"
