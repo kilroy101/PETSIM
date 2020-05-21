@@ -12,6 +12,7 @@ Det_limit = int(64)
 Time_limit = int(5)
 Pos_limit = int(0)
 
+df = df[df['Time'] <= Time_limit]
 Bottom  = df[df['XPos'] >= Pos_limit]
 Top = df[df['XPos'] <= Pos_limit]
 
