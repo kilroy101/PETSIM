@@ -144,7 +144,9 @@ void PETDetectorConstruction::BuildMaterial() {
 
     G4double rAir[num] = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 
-    G4double Reflec[num] = {0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98};
+    G4double Reflec[num] = {91.67,91.67,91.67,93.78,94.12,94.12,94.67,94.67,94.67,94.67,94.67,94.67,94.67,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.48,95.48,95.48,95.48,95.48,95.48,95.48,95.81,95.81,95.81,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.28,96.28,96.4,96.4,96.47,96.47,96.47,96.47,96.47,96.59,96.59,96.61,96.61,96.65,96.65,96.65,96.76,96.76,96.76,96.76,96.76,96.74,96.74,96.77,96.77,96.78,96.83,96.83,96.84,96.84,96.83,96.83,96.86,96.86,96.83,96.83,96.81,96.81,96.9,96.9,96.95,96.95,96.93,96.93,96.9,96.9,96.92,96.92,96.85,96.85,96.83,96.83,96.82,96.4,96.4,96.28,96.28,96.28,96.28,96.59,96.59,96.59,96.61,96.61,96.61};
+
+    //G4double Reflec[num] = {0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98};
 
     // G4double rBGO[num] = {2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15};
 
@@ -279,6 +281,9 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     G4Box* solidPolyTop = new G4Box('PolyTop',(block_dx-0.2*mm)/2,0.007*mm/2,block_dz/2);
     G4LogicalVolume* logicPolyTop = new G4LogicalVolume(solidPolyTop, fPolystyrene, "PolyTopLV");
     G4LogicalVolume* logicPolySide = new G4LogicalVolume(solidPolySide,fPolystyrene,"PolySideLV");
+    
+    G4Box* solidPolyBlock = new G4Box('PolyBlock', block_dx/2, block_dy/2, 0.007*mm/2);
+    G4LogicalVolume* logicPolyBlock = new G4LogicalVolume(solidPolyBlock, fPolystyrene, 'PolyBlockLV');
 
     G4Box* solidBaSO4Side = new G4Box('BaSO4Side',(gap_c)/2,block_dy/2,block_dz/2);
     G4Box* solidBaSO4Top = new G4Box('BaSO4Top',block_dx/2,(gap_c)/2,block_dz/2);
@@ -349,9 +354,6 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
   rotm_in.rotateY(90*deg);
   rotm_in.rotateZ(phi);
   
-
-  
-
   for (G4int icrys = 0; icrys < nb_crys ; icrys++){
     for (G4int jcrys = 0; jcrys < nb_crys ; jcrys++){
       G4int CrysCopyNumber = (jcrys + nb_crys*icrys ) ;
@@ -372,8 +374,7 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     //fStepLimit = new G4UserLimits(maxStep);
     //logicCryst->SetUserLimits(fStepLimit);
 
-
-
+}}
 
     for (G4int  igel = 1; igel < nb_gels ; igel++){
       for (G4int jgel = 1; jgel < nb_gels ; jgel++){
@@ -434,6 +435,9 @@ new G4PVPlacement(Top_gel_transform,
 
 
     }}
+
+    for (G4int  icrys = 0; icrys < nb_crys; icrys++){
+      for (G4int jcrys = 0; jcrys < nb_crys ; jcrys++){
 
   G4int OutdetCopyNumber = jcrys + nb_crys*icrys+64;
   G4ThreeVector position_out_det = G4ThreeVector(ODx+0.150*mm+Glue_dz, //- 0.03*cryst_dz,//172.41*mm,//+det_dz- (3.5-icrys)*det_dx*sin(phi),
@@ -513,14 +517,28 @@ new G4PVPlacement(Top_gel_transform,
                                     	0,                 //copy number
                                       checkOverlaps);       // checking overlaps
   }} // end of cryst
+  
+  
+  ////Vikuity on front crystal face - only include if doing a single-readout geometry
+  //G4ThreeVector position_seperator_block = G4ThreeVector(ring_R1 - 0.0045*mm,0,0);
+  //G4Transform3D seperator_block_transform = G4Transform3D(rotm_crys,position_seperator_block);
+  //new G4PVPlacement(seperator_block_transform,             //rotation,position
+	                 //logicPolyBlock,            //its logical volume
+	                 //"seperatorBlock",             //its name
+	                 //logicIRing,             //its mother  volume
+	                 //false,                 //no boolean operation
+	                 //0,                 //copy number
+	                 //checkOverlaps);       // checking overlaps
 
   for (G4int imod_radial = 0; imod_radial < 1 ; imod_radial++){
     G4double mod_phi = (imod_radial-1)*dPhi;
     for (G4int imod_vertical = 0; imod_vertical < 1 ; imod_vertical++){
+    G4double mod_pi = (imod_vertical-1)*dPhi;
     G4RotationMatrix rotm  = G4RotationMatrix();
-    rotm.rotateZ(0);//mod_phi
+    // rotm.rotateZ(mod_phi);//mod_phi
+	// rotm.rotateY(-1*mod_pi);
 
-    G4ThreeVector position_mod = G4ThreeVector(0,0,0);//std::cos(mod_phi),std::sin(mod_phi), (25.78*imod_vertical)
+    G4ThreeVector position_mod = G4ThreeVector(0,0,0);//std::cos(mod_phi), std::sin(mod_phi)-block_dy/2, imod_vertical-block_dx/2
     G4Transform3D transform_mod = G4Transform3D(rotm,position_mod);
     new G4PVPlacement(transform_mod,                     //no rotation
                     logicIRing,             //its logical volume
@@ -545,6 +563,7 @@ new G4PVPlacement(Top_gel_transform,
     logicIRing->SetVisAttributes(G4VisAttributes::Invisible);//LogVisAttributes
     logicPolySide->SetVisAttributes(PolyVisAttributes);
     logicPolyTop->SetVisAttributes(PolyVisAttributes);
+    logicPolyBlock->SetVisAttributes(PolyVisAttributes);
     logicBaSO4Side->SetVisAttributes(PolyVisAttributes);
     logicBaSO4Top->SetVisAttributes(PolyVisAttributes);
 
