@@ -220,14 +220,14 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
         G4SolidStore::GetInstance()->Clean();
     }
 
-    G4double cryst_dx = 3.0*mm, cryst_dy = 3.0*mm, cryst_dz = 15*mm;
+    G4double cryst_dx = 3.0*mm, cryst_dy = 3.0*mm, cryst_dz = 30*mm;
     G4double det_dx = 3*mm, det_dy = 3*mm, det_dz = 1*mm;
     G4double gap_c = 0.2*mm;
     G4double Glue_dz = 0.1*mm;
 
     G4int nb_block =40;
     G4int nb_crys = 8, nb_gels = nb_crys+1;
-    G4double block_dx = nb_crys*cryst_dx+nb_gels*gap_c, block_dy = nb_crys*cryst_dx+nb_crys*gap_c, block_dz = cryst_dz+det_dz+Glue_dz+0.150*mm;
+    G4double block_dx = nb_crys*cryst_dx+nb_gels*gap_c, block_dy = nb_crys*cryst_dx+nb_crys*gap_c, block_dz = cryst_dz+det_dz+Glue_dz;//+0.150*mm; if including resin
     //G4int nb_rings = 8;
     //
     G4double dPhi = twopi/nb_block, half_dPhi=0.5*dPhi;
@@ -402,10 +402,10 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 
         G4ThreeVector Side_gel_position = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
                                                      0,
-                                                     (4-jgel)*(det_dx+gap_c)+0.025*mm);//Shift it over from between two cystals to 0.001 mm of air gap, take out for BaSO4
+                                                     (4-jgel)*(det_dx+gap_c)+0.0575*mm);//Shift it over from between two cystals to 0.001 mm of air gap, take out for BaSO4
                                                                               //+0.0955*mm
         G4ThreeVector Top_gel_position = G4ThreeVector(Bx,
-                                                     (4-igel)*(det_dx+gap_c)+0.025*mm,//+0.0955*mm
+                                                     (4-igel)*(det_dx+gap_c)+0.0575*mm,//+0.0955*mm
                                                      0);
 
 
@@ -432,10 +432,10 @@ new G4PVPlacement(Top_gel_transform,
 
         G4ThreeVector Side_gel_position = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
                                                      0,
-                                                     (4-jgel)*(det_dx+gap_c)-0.025*mm);//-0.0955*mm
+                                                     (4-jgel)*(det_dx+gap_c)-0.0575*mm);//-0.0955*mm
 
         G4ThreeVector Top_gel_position = G4ThreeVector(Bx,
-                                                     (4-igel)*(det_dx+gap_c)-0.025*mm,//-0.0955*mm
+                                                     (4-igel)*(det_dx+gap_c)-0.0575*mm,//-0.0955*mm
                                                      0);
 
 
@@ -461,7 +461,8 @@ new G4PVPlacement(Top_gel_transform,
       for (G4int jcrys = 0; jcrys < nb_crys ; jcrys++){
 
   G4int OutdetCopyNumber = jcrys + nb_crys*icrys+64;
-  G4ThreeVector position_out_det = G4ThreeVector(ODx+0.150*mm+Glue_dz, //- 0.03*cryst_dz,//172.41*mm,//+det_dz- (3.5-icrys)*det_dx*sin(phi),
+  //Without resin. Add 0.150*mm to x position if needed.
+  G4ThreeVector position_out_det = G4ThreeVector(ODx+Glue_dz, //- 0.03*cryst_dz,//172.41*mm,//+det_dz- (3.5-icrys)*det_dx*sin(phi),
                                                   ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
                                                   (3.5-jcrys)*(det_dx+gap_c)); //with rotation, 1.07 to account for 0.2 space between detectors
   G4Transform3D transform_out_det = G4Transform3D(rotm_out,position_out_det);
@@ -483,13 +484,13 @@ new G4PVPlacement(Top_gel_transform,
 		               false,                 //no boolean operation
 		               OutdetCopyNumber,                 //copy number
   		             checkOverlaps);       // checking overlaps
-  new G4PVPlacement(transform_out_resin,             //rotation,position
-                    logicResin,            //its logical volume
-                 		"Resin",             //its name
-                 		logicIRing,             //its mother  volume
-                 		false,                 //no boolean operation
-                 		0,                 //copy number
-                    checkOverlaps);       // checking overlaps
+  //new G4PVPlacement(transform_out_resin,             //rotation,position
+                    //logicResin,            //its logical volume
+                 		//"Resin",             //its name
+                 		//logicIRing,             //its mother  volume
+                 		//false,                 //no boolean operation
+                 		//0,                 //copy number
+                    //checkOverlaps);       // checking overlaps
   new G4PVPlacement(transform_out_glue,             //rotation,position
                     logicGlue,            //its logical volume
                   	"Glue",             //its name
@@ -498,22 +499,23 @@ new G4PVPlacement(Top_gel_transform,
                   	0,                 //copy number
                     checkOverlaps);       // checking overlaps
 
-  ////Detectors on the front face. Only for double-readout geometry.
-  //G4int IndetCopyNumber = jcrys + nb_crys*icrys;
-  //G4ThreeVector position_in_det = G4ThreeVector(IDx-0.150*mm-Glue_dz-det_dz/2, //- 0.01*cryst_dz,//+0.4*cos(phi)*mm - (3.5-icrys)*det_dx*sin(phi),
-            //IDy+(3.5-icrys)*(det_dx+gap_c)*cos(phi)+0.4*sin(phi),
-            //(3.5-jcrys)*(det_dx+gap_c));
-            ////with rotation, 1.07 to account for 0.2 space between detectors
-  //G4Transform3D transform_in_det = G4Transform3D(rotm_in,position_in_det);
-  //G4ThreeVector position_in_resin = G4ThreeVector(IDx-Glue_dz-0.075*mm,
-                                                  //ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
-                                                  //(3.5-jcrys)*(det_dx+gap_c));
-  //G4Transform3D transform_in_resin = G4Transform3D(rotm_out,position_in_resin);
+  //Detectors on the front face. Only for double-readout geometry.
+  G4int IndetCopyNumber = jcrys + nb_crys*icrys;
+  //Without resin. Subtract 0.150*mm from x position if needed.
+  G4ThreeVector position_in_det = G4ThreeVector(IDx-Glue_dz-det_dz/2, //- 0.01*cryst_dz,//+0.4*cos(phi)*mm - (3.5-icrys)*det_dx*sin(phi),
+            IDy+(3.5-icrys)*(det_dx+gap_c)*cos(phi)+0.4*sin(phi),
+            (3.5-jcrys)*(det_dx+gap_c));
+            //with rotation, 1.07 to account for 0.2 space between detectors
+  G4Transform3D transform_in_det = G4Transform3D(rotm_in,position_in_det);
+  G4ThreeVector position_in_resin = G4ThreeVector(IDx-Glue_dz-0.075*mm,
+                                                  ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
+                                                  (3.5-jcrys)*(det_dx+gap_c));
+  G4Transform3D transform_in_resin = G4Transform3D(rotm_out,position_in_resin);
 
-  //G4ThreeVector position_in_glue = G4ThreeVector(IDx-Glue_dz/2,
-                                                  //ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
-                                                  //(3.5-jcrys)*(det_dx+gap_c));
-  //G4Transform3D transform_in_glue = G4Transform3D(rotm_out,position_in_glue);
+  G4ThreeVector position_in_glue = G4ThreeVector(IDx-Glue_dz/2,
+                                                  ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
+                                                  (3.5-jcrys)*(det_dx+gap_c));
+  G4Transform3D transform_in_glue = G4Transform3D(rotm_out,position_in_glue);
 
   //new G4PVPlacement(transform_in_det,             //rotation,position
                     //logicDet_outer,            //its logical volume
@@ -523,13 +525,13 @@ new G4PVPlacement(Top_gel_transform,
                     //IndetCopyNumber,                 //copy number
                     //checkOverlaps);       // checking overlaps
 
-                    //new G4PVPlacement(transform_in_resin,             //rotation,position
-                                      //logicResin,            //its logical volume
-                                   		//"Resin",             //its name
-                                   		//logicIRing,             //its mother  volume
-                                   		//false,                 //no boolean operation
-                                   		//0,                 //copy number
-                                      //checkOverlaps);       // checking overlaps
+                    ////new G4PVPlacement(transform_in_resin,             //rotation,position
+                                      ////logicResin,            //its logical volume
+                                   		////"Resin",             //its name
+                                   		////logicIRing,             //its mother  volume
+                                   		////false,                 //no boolean operation
+                                   		////0,                 //copy number
+                                      ////checkOverlaps);       // checking overlaps
                     //new G4PVPlacement(transform_in_glue,             //rotation,position
                                       //logicGlue,            //its logical volume
                                     	//"Glue",             //its name
