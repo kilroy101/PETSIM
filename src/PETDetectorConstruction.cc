@@ -83,6 +83,9 @@ void PETDetectorConstruction::BuildMaterial() {
 
      //BaSO4
     fBariumSulfate = nist->FindOrBuildMaterial("G4_BARIUM_SULFATE");
+    
+    //TiO2
+    fTitaniumDioxide = nist->FindOrBuildMaterial("G4_TITANIUM_DIOXIDE");
 
     // Y2O3
     fYttriumOxide = new G4Material("YttriumOxide", 5.01 * g / cm3, 2);
@@ -131,13 +134,6 @@ void PETDetectorConstruction::BuildMaterial() {
 
     // G4double rGel[num] = {1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82, 1.82};
 
-    //G4double rGel[num] = {1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9};
-
-    //G4double rGel[num] = {1.7, 1.7, 1.7, 1.7, 1.7,1.7, 1.7, 1.7, 1.7, 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7, 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 , 1.7,1.7, 1.7, 1.7, 1.7 ,1.7};
-
-
-    //G4double rGel[num] = {1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636};
-
     G4double rBaSO4[num] = {1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636};
 
     G4double rPoly[num] = {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
@@ -146,7 +142,6 @@ void PETDetectorConstruction::BuildMaterial() {
 
     G4double Reflec[num] = {91.67,91.67,91.67,93.78,94.12,94.12,94.67,94.67,94.67,94.67,94.67,94.67,94.67,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.07,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.24,95.48,95.48,95.48,95.48,95.48,95.48,95.48,95.81,95.81,95.81,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.05,96.28,96.28,96.4,96.4,96.47,96.47,96.47,96.47,96.47,96.59,96.59,96.61,96.61,96.65,96.65,96.65,96.76,96.76,96.76,96.76,96.76,96.74,96.74,96.77,96.77,96.78,96.83,96.83,96.84,96.84,96.83,96.83,96.86,96.86,96.83,96.83,96.81,96.81,96.9,96.9,96.95,96.95,96.93,96.93,96.9,96.9,96.92,96.92,96.85,96.85,96.83,96.83,96.82,96.4,96.4,96.28,96.28,96.28,96.28,96.59,96.59,96.59,96.61,96.61,96.61};
 	//G4double Reflec[num] = {0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
-    //G4double Reflec[num] = {0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98};
 
     // G4double rBGO[num] = {2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15, 2.15};
 
@@ -269,14 +264,22 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     G4Box* solidPolyTop = new G4Box('PolyTop',(block_dx-0.2*mm)/2,0.065*mm/2,block_dz/2);
     G4LogicalVolume* logicPolyTop = new G4LogicalVolume(solidPolyTop, fPolystyrene, "PolyTopLV");
     G4LogicalVolume* logicPolySide = new G4LogicalVolume(solidPolySide,fPolystyrene,"PolySideLV");
-    
     G4Box* solidPolyBlock = new G4Box('PolyBlock', block_dx/2, block_dy/2, 0.065*mm/2);
     G4LogicalVolume* logicPolyBlock = new G4LogicalVolume(solidPolyBlock, fPolystyrene, 'PolyBlockLV');
 
-    G4Box* solidBaSO4Side = new G4Box('BaSO4Side',(gap_c)/2,block_dy/2,block_dz/2);
-    G4Box* solidBaSO4Top = new G4Box('BaSO4Top',block_dx/2,(gap_c)/2,block_dz/2);
+    G4Box* solidBaSO4Side = new G4Box('BaSO4Side',0.085*mm/2,block_dy/2,block_dz/2);
+    G4Box* solidBaSO4Top = new G4Box('BaSO4Top',block_dx/2,0.085*mm/2,block_dz/2);
     G4LogicalVolume* logicBaSO4Top = new G4LogicalVolume(solidBaSO4Top, fBariumSulfate, "BaSO4TopLV");
     G4LogicalVolume* logicBaSO4Side = new G4LogicalVolume(solidBaSO4Side,fBariumSulfate,"BaSO4SideLV");
+    G4Box* solidBaSO4Block = new G4Box('BaSO4Block', block_dx/2, block_dy/2, 0.085*mm/2);
+    G4LogicalVolume* logicBaSO4Block = new G4LogicalVolume(solidBaSO4Block, fBariumSulfate, 'BaSO4BlockLV');
+    
+	G4Box* solidTiO2Side = new G4Box('TiO2Side',0.085*mm/2,block_dy/2,block_dz/2);
+    G4Box* solidTiO2Top = new G4Box('TiO2Top',block_dx/2,0.085*mm/2,block_dz/2);
+    G4LogicalVolume* logicTiO2Top = new G4LogicalVolume(solidTiO2Top, fTitaniumDioxide, "TiO2TopLV");
+    G4LogicalVolume* logicTiO2Side = new G4LogicalVolume(solidTiO2Side,fTitaniumDioxide,"TiO2SideLV");
+    G4Box* solidTiO2Block = new G4Box('TiO2Block', block_dx/2, block_dy/2, 0.085*mm/2);
+    G4LogicalVolume* logicTiO2Block = new G4LogicalVolume(solidTiO2Block, fTitaniumDioxide, 'TiO2BlockLV');
 
     G4Box* solidResin = new G4Box("Resin", cryst_dx/2, cryst_dy/2, 0.150*mm/2);
     G4LogicalVolume* logicResin =  new G4LogicalVolume(solidResin, fGel, "Resin");
@@ -285,7 +288,14 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     G4LogicalVolume* logicGlue =  new G4LogicalVolume(solidGlue, fBGO, "Glue");
 
 
+    //Defining the surface properties of crystals. Crystals may be ground or polished, so choose the correct sigma alpha.
+    //G4double sigma_alpha = 0.209439; //12 deg., for ground crystal
+	G4double sigma_alpha = 0.0226893; //1.3 deg., for polished crystal
+	G4OpticalSurface* opCrystalSurface = new G4OpticalSurface("CystalSurface");
+      opCrystalSurface->SetFinish(polished);
+    G4LogicalSkinSurface* CrystalSurface = new G4LogicalSkinSurface("Crystal Surface", logicCryst, opCrystalSurface);
 	
+	//Defining surface properties of detectors
     G4OpticalSurface* opDetectorSurface = new G4OpticalSurface("DetectorSurface");
       opDetectorSurface->SetFinish(ground);  
     const G4int effNum = 64;
@@ -302,25 +312,28 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     opDetectorSurface->SetMaterialPropertiesTable(detectorMPT);
     G4LogicalSkinSurface* DetectorSideSurface = new G4LogicalSkinSurface("Detector Surface", logicDet_outer, opDetectorSurface);
 
+
+	//Defining surface properites for Vikuiti, BaSO4, and TiO2. First, tables that will be used.
 	const G4int num = 120;
     G4double ene[num] = {3.51370304301*eV,3.46284728249*eV,3.4156577087*eV,3.36977603198*eV,3.23635193804*eV,3.22094763375*eV,3.20764136152*eV,3.19637713232*eV,3.18291759837*eV,3.17218298275*eV,3.16123184911*eV,3.1503731311*eV,3.1396057038*eV,3.12928927829*eV,3.12192642432*eV,3.11495009612*eV,3.10797996538*eV,3.10108780463*eV,3.09434823581*eV,3.0876570207*eV,3.0810055618*eV,3.07438540703*eV,3.06780442816*eV,3.06124350731*eV,3.05469721997*eV,3.04817354563*eV,3.04165911826*eV,3.03518039566*eV,3.02874761411*eV,3.02234465979*eV,3.01597393385*eV,3.00960145787*eV,3.00323000843*eV,2.99723759298*eV,2.99057154424*eV,2.984211427*eV,2.97752386539*eV,2.9682041556*eV,2.95859140503*eV,2.95063652972*eV,2.93947102052*eV,2.92513342795*eV,2.89963655932*eV,2.87253927733*eV,2.85352309132*eV,2.83628914618*eV,2.8222957219*eV,2.80993218523*eV,2.79766640437*eV,2.78549390188*eV,2.77344008928*eV,2.76149998282*eV,2.74965574426*eV,2.73791911725*eV,2.72625989445*eV,2.71468687979*eV,2.70321484598*eV,2.62319693516*eV,2.61249533729*eV,2.60188652089*eV,2.59136351654*eV,2.58094246644*eV,2.5706077365*eV,2.56035262437*eV,2.55018739616*eV,2.53884632056*eV,2.46805717364*eV,2.45631868318*eV,2.44469337969*eV,2.43204791693*eV,2.41841286976*eV,2.40494311619*eV,2.38943563283*eV,2.37197339274*eV,2.35478359973*eV,2.33681395534*eV,2.31707351876*eV,2.30377129545*eV,2.25609178885*eV,2.23488272047*eV,2.21410318259*eV,2.19371928099*eV,2.17372057346*eV,2.15408900424*eV,2.13481455788*eV,2.11588408116*eV,2.09729119825*eV,2.07902560898*eV,2.0610754277*eV,2.04343516532*eV,2.02609686477*eV,2.00905157727*eV,1.99229317822*eV,1.97581265517*eV,1.95960675492*eV,1.94367103348*eV,1.92800809024*eV,1.91260128415*eV,1.89744776279*eV,1.88252859884*eV,1.86783894415*eV,1.85337461802*eV,1.83912783245*eV,1.82509840454*eV,1.81128037215*eV,1.7976639421*eV,1.78425469025*eV,1.77643183324*eV,2.64723791997*eV,2.65431419592*eV,2.66836164719*eV,2.6790662172*eV,2.6863139081*eV,2.69716329233*eV,2.53364876322*eV,2.5209805194*eV,2.51147200842*eV,2.49905148118*eV,2.48976188644*eV,2.48661723357*eV};
-	G4double Reflec[num] = {0.9167, 0.9167, 0.9167, 0.9378, 0.9412, 0.9412, 0.9467, 0.9467, 0.9467, 0.9467, 0.9467, 0.9467, 0.9467, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9548, 0.9548, 0.9548, 0.9548, 0.9548, 0.9548, 0.9548, 0.9581, 0.9581, 0.9581, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9628, 0.9628, 0.964, 0.964, 0.9647, 0.9647, 0.9647, 0.9647, 0.9647, 0.9659, 0.9659, 0.9661, 0.9661, 0.9665, 0.9665, 0.9665, 0.9676, 0.9676, 0.9676, 0.9676, 0.9676, 0.9674, 0.9674, 0.9677, 0.9677, 0.9678, 0.9683, 0.9683, 0.9684, 0.9684, 0.9683, 0.9683, 0.9686, 0.9686, 0.9683, 0.9683, 0.9681, 0.9681, 0.969, 0.969, 0.9695, 0.9695, 0.9693, 0.9693, 0.969, 0.969, 0.9692, 0.9692, 0.9685, 0.9685, 0.9683, 0.9683, 0.9682, 0.964, 0.964, 0.9628, 0.9628, 0.9628, 0.9628, 0.9659, 0.9659, 0.9659, 0.9661, 0.9661, 0.9661};
-	//G4double Reflec[num] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+	G4double reflecVikuiti[num] = {0.9167, 0.9167, 0.9167, 0.9378, 0.9412, 0.9412, 0.9467, 0.9467, 0.9467, 0.9467, 0.9467, 0.9467, 0.9467, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9507, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9524, 0.9548, 0.9548, 0.9548, 0.9548, 0.9548, 0.9548, 0.9548, 0.9581, 0.9581, 0.9581, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9605, 0.9628, 0.9628, 0.964, 0.964, 0.9647, 0.9647, 0.9647, 0.9647, 0.9647, 0.9659, 0.9659, 0.9661, 0.9661, 0.9665, 0.9665, 0.9665, 0.9676, 0.9676, 0.9676, 0.9676, 0.9676, 0.9674, 0.9674, 0.9677, 0.9677, 0.9678, 0.9683, 0.9683, 0.9684, 0.9684, 0.9683, 0.9683, 0.9686, 0.9686, 0.9683, 0.9683, 0.9681, 0.9681, 0.969, 0.969, 0.9695, 0.9695, 0.9693, 0.9693, 0.969, 0.969, 0.9692, 0.9692, 0.9685, 0.9685, 0.9683, 0.9683, 0.9682, 0.964, 0.964, 0.9628, 0.9628, 0.9628, 0.9628, 0.9659, 0.9659, 0.9659, 0.9661, 0.9661, 0.9661};
+	G4double rBaSO4[num] = {1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636, 1.636};
+    G4double reflecBaSO4[num] = {0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955};
+    G4double rTiO2[num] = {2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488, 2.488};
+    G4double reflecTiO2[num] = {0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955, 0.955};
 	const G4int n = 6;
 	G4double PhotonEnergy[n] = {3.105*eV,2.95714*eV,2.855*eV,2.7*eV,2.5875*eV,2.388*eV};
 	G4double specularlobe[n] = {1.0,1.0,1.0,1.0,1.0,1.0};
 	G4double specularspike[n] = {0.0,0.0,0.0,0.0,0.0,0.0};
 	G4double backscatter[n] = {0.0,0.0,0.0,0.0,0.0,0.0};
-    //G4double sigma_alpha = 0.209439; //12 eg., for ground crystal
-	//G4double sigma_alpha = 0.0663225; //3.8 deg., for etched crystal
-	G4double sigma_alpha = 0.0226893; //1.3 deg., for polished crystal
 
+	//Ascribing Vikuiti properties
 	fPlasticSurface_MPT = new G4MaterialPropertiesTable();
 	//Defining probabilities that the Vikuity surface undergoes certain reflection processes. Since using unified model, should be 100% specular lobe, with sigma_alpha specified.
 	fPlasticSurface_MPT->AddProperty("SPECULARLOBECONSTANT",PhotonEnergy,specularlobe,n);
 	fPlasticSurface_MPT->AddProperty("SPECULARSPIKECONSTANT",PhotonEnergy,specularspike,n);
 	fPlasticSurface_MPT->AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter,n);
-	fPlasticSurface_MPT->AddProperty("REFLECTIVITY", ene, Reflec, num);
+	fPlasticSurface_MPT->AddProperty("REFLECTIVITY", ene, reflecVikuiti, num);
 
     G4OpticalSurface* opPlasticSurface = new G4OpticalSurface("PlasticSurface");
       opPlasticSurface->SetType(dielectric_metal);
@@ -329,29 +342,42 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
       opPlasticSurface->SetSigmaAlpha(sigma_alpha);
       opPlasticSurface->SetMaterialPropertiesTable(fPlasticSurface_MPT);
       
-      
 	G4LogicalSkinSurface* PlasticSurface_T = new G4LogicalSkinSurface("Plastic Surface", logicPolyTop, opPlasticSurface);
     G4LogicalSkinSurface* PlasticSurface_S = new G4LogicalSkinSurface("Plastic Surface", logicPolySide, opPlasticSurface);
     
+    //Ascribing BaSO4 properties
+    fBaSO4Surface_MPT = new G4MaterialPropertiesTable();
+	//Defining probabilities that the surface undergoes certain reflection processes. Since using unified model, should be 100% specular lobe, with sigma_alpha specified.
+	fBaSO4Surface_MPT->AddProperty("SPECULARLOBECONSTANT",PhotonEnergy,specularlobe,n);
+	fBaSO4Surface_MPT->AddProperty("SPECULARSPIKECONSTANT",PhotonEnergy,specularspike,n);
+	fBaSO4Surface_MPT->AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter,n);
+	fBaSO4Surface_MPT->AddProperty("RINDEX", ene, rBaSO4, num);
+	fBaSO4Surface_MPT->AddProperty("REFLECTIVITY", ene, reflecBaSO4, num);
+    G4OpticalSurface* opBaSO4Surface = new G4OpticalSurface("BaSO4Surface");
+      opBaSO4Surface->SetType(dielectric_dielectric);
+      opBaSO4Surface->SetFinish(groundbackpainted);
+      opBaSO4Surface->SetSigmaAlpha(sigma_alpha);
+      opBaSO4Surface->SetMaterialPropertiesTable(fBaSO4Surface_MPT);
+      
+    G4LogicalSkinSurface* BaSO4Surface_T = new G4LogicalSkinSurface("BaSO4 Surface", logicBaSO4Top, opBaSO4Surface);
+    G4LogicalSkinSurface* BaSO4Surface_S = new G4LogicalSkinSurface("BaSO4 Surface", logicBaSO4Side, opBaSO4Surface);
     
-    G4OpticalSurface* opCrystalSurface = new G4OpticalSurface("CystalSurface");
-      opCrystalSurface->SetFinish(polished);
-    //G4OpticalSurface* opBaSO4Surface = new G4OpticalSurface("BaSO4Surface");
-      ////opBaSO4Surface->SetType(dielectric_dielectric);
-      //opBaSO4Surface->SetFinish(polishedfrontpainted);
-
-    G4LogicalSkinSurface* CrystalSurface = new G4LogicalSkinSurface("Crystal Surface", logicCryst, opCrystalSurface);
-    //G4LogicalSkinSurface* BaSO4Surface_T = new G4LogicalSkinSurface("BaSO4 Surface", logicBaSO4Top, opBaSO4Surface);
-    //G4LogicalSkinSurface* BaSO4Surface_S = new G4LogicalSkinSurface("BaSO4 Surface", logicBaSO4Side, opBaSO4Surface);
-
-	//G4OpticalSurface* opGlueSurface = new G4OpticalSurface("GlueSurface");
-	//G4MaterialPropertiesTable *glueMPT = new G4MaterialPropertiesTable();
-    ////Don't add reflectivity unless you're sure about it; otherwise it will count all photons as being absorbed in SiPM
-    ////detectorMPT->AddProperty("REFLECTIVITY", ephoton_pmt, reflectivity_pmt, effNum);
-    //glueMPT->AddProperty("EFFICIENCY",   ephoton_pmt, efficiency_pmt,   effNum);
-    //opGlueSurface->SetMaterialPropertiesTable(glueMPT);
-    //G4LogicalSkinSurface* GlueSurface = new G4LogicalSkinSurface("Glue Surface", logicGlue, opGlueSurface);
-
+    //Ascribing TiO2 properties
+    fTiO2Surface_MPT = new G4MaterialPropertiesTable();
+	//Defining probabilities that the surface undergoes certain reflection processes. Since using unified model, should be 100% specular lobe, with sigma_alpha specified.
+	fTiO2Surface_MPT->AddProperty("SPECULARLOBECONSTANT",PhotonEnergy,specularlobe,n);
+	fTiO2Surface_MPT->AddProperty("SPECULARSPIKECONSTANT",PhotonEnergy,specularspike,n);
+	fTiO2Surface_MPT->AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter,n);
+	fTiO2Surface_MPT->AddProperty("RINDEX", ene, rTiO2, num);
+	fTiO2Surface_MPT->AddProperty("REFLECTIVITY", ene, reflecTiO2, num);
+    G4OpticalSurface* opTiO2Surface = new G4OpticalSurface("TiO2Surface");
+      opTiO2Surface->SetType(dielectric_dielectric);
+      opTiO2Surface->SetFinish(groundbackpainted);
+      opTiO2Surface->SetSigmaAlpha(sigma_alpha);
+      opTiO2Surface->SetMaterialPropertiesTable(fTiO2Surface_MPT);
+      
+    G4LogicalSkinSurface* TiO2Surface_T = new G4LogicalSkinSurface("TiO2 Surface", logicTiO2Top, opTiO2Surface);
+    G4LogicalSkinSurface* TiO2Surface_S = new G4LogicalSkinSurface("TiO2 Surface", logicTiO2Side, opTiO2Surface);
 
 
 
@@ -380,7 +406,7 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
       G4int CrysCopyNumber = (jcrys + nb_crys*icrys ) ;
       G4ThreeVector position_cryst = G4ThreeVector(Bx,//168.16*mm,// - (3.5-icrys)*det_dx*sin(phi),// +0.5*det_dz,
                                                      By+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
-                                                     (3.5-jcrys)*(det_dx+gap_c)); //with rotation, 1.07 to account for 0.2 space between detectors
+                                                     (3.5-jcrys)*(det_dx+gap_c)); 
       G4Transform3D transform_cryst = G4Transform3D(rotm_crys,position_cryst);
       new G4PVPlacement(transform_cryst,             //rotation,position
                           logicCryst,            //its logical volume
@@ -402,10 +428,10 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 
         G4ThreeVector Side_gel_position = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
                                                      0,
-                                                     (4-jgel)*(det_dx+gap_c)+0.0575*mm);//Shift it over from between two cystals to 0.001 mm of air gap, take out for BaSO4
-                                                                              //+0.0955*mm
+                                                     (4-jgel)*(det_dx+gap_c)+0.0575*mm);
+
         G4ThreeVector Top_gel_position = G4ThreeVector(Bx,
-                                                     (4-igel)*(det_dx+gap_c)+0.0575*mm,//+0.0955*mm
+                                                     (4-igel)*(det_dx+gap_c)+0.0575*mm,
                                                      0);
 
 
@@ -432,10 +458,10 @@ new G4PVPlacement(Top_gel_transform,
 
         G4ThreeVector Side_gel_position = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
                                                      0,
-                                                     (4-jgel)*(det_dx+gap_c)-0.0575*mm);//-0.0955*mm
+                                                     (4-jgel)*(det_dx+gap_c)-0.0575*mm);
 
         G4ThreeVector Top_gel_position = G4ThreeVector(Bx,
-                                                     (4-igel)*(det_dx+gap_c)-0.0575*mm,//-0.0955*mm
+                                                     (4-igel)*(det_dx+gap_c)-0.0575*mm,
                                                      0);
 
 
@@ -464,7 +490,7 @@ new G4PVPlacement(Top_gel_transform,
   //Without resin. Add 0.150*mm to x position if needed.
   G4ThreeVector position_out_det = G4ThreeVector(ODx+Glue_dz, //- 0.03*cryst_dz,//172.41*mm,//+det_dz- (3.5-icrys)*det_dx*sin(phi),
                                                   ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
-                                                  (3.5-jcrys)*(det_dx+gap_c)); //with rotation, 1.07 to account for 0.2 space between detectors
+                                                  (3.5-jcrys)*(det_dx+gap_c)); 
   G4Transform3D transform_out_det = G4Transform3D(rotm_out,position_out_det);
 
   G4ThreeVector position_out_resin = G4ThreeVector(ring_R1+cryst_dz+Glue_dz+0.075*mm,
@@ -505,7 +531,7 @@ new G4PVPlacement(Top_gel_transform,
   G4ThreeVector position_in_det = G4ThreeVector(IDx-Glue_dz-det_dz/2, //- 0.01*cryst_dz,//+0.4*cos(phi)*mm - (3.5-icrys)*det_dx*sin(phi),
             IDy+(3.5-icrys)*(det_dx+gap_c)*cos(phi)+0.4*sin(phi),
             (3.5-jcrys)*(det_dx+gap_c));
-            //with rotation, 1.07 to account for 0.2 space between detectors
+
   G4Transform3D transform_in_det = G4Transform3D(rotm_in,position_in_det);
   G4ThreeVector position_in_resin = G4ThreeVector(IDx-Glue_dz-0.075*mm,
                                                   ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
@@ -517,41 +543,41 @@ new G4PVPlacement(Top_gel_transform,
                                                   (3.5-jcrys)*(det_dx+gap_c));
   G4Transform3D transform_in_glue = G4Transform3D(rotm_out,position_in_glue);
 
-  //new G4PVPlacement(transform_in_det,             //rotation,position
-                    //logicDet_outer,            //its logical volume
-                    //"detector",             //its name
-                    //logicIRing,             //its mother  volume
-                    //false,                 //no boolean operation
-                    //IndetCopyNumber,                 //copy number
-                    //checkOverlaps);       // checking overlaps
+  new G4PVPlacement(transform_in_det,             //rotation,position
+                    logicDet_outer,            //its logical volume
+                    "detector",             //its name
+                    logicIRing,             //its mother  volume
+                    false,                 //no boolean operation
+                    IndetCopyNumber,                 //copy number
+                    checkOverlaps);       // checking overlaps
 
-                    ////new G4PVPlacement(transform_in_resin,             //rotation,position
-                                      ////logicResin,            //its logical volume
-                                   		////"Resin",             //its name
-                                   		////logicIRing,             //its mother  volume
-                                   		////false,                 //no boolean operation
-                                   		////0,                 //copy number
-                                      ////checkOverlaps);       // checking overlaps
-                    //new G4PVPlacement(transform_in_glue,             //rotation,position
-                                      //logicGlue,            //its logical volume
-                                    	//"Glue",             //its name
-                                    	//logicIRing,             //its mother  volume
-                                    	//false,                 //no boolean operation
-                                    	//0,                 //copy number
+                    //new G4PVPlacement(transform_in_resin,             //rotation,position
+                                      //logicResin,            //its logical volume
+                                   		//"Resin",             //its name
+                                   		//logicIRing,             //its mother  volume
+                                   		//false,                 //no boolean operation
+                                   		//0,                 //copy number
                                       //checkOverlaps);       // checking overlaps
+                    new G4PVPlacement(transform_in_glue,             //rotation,position
+                                      logicGlue,            //its logical volume
+                                    	"Glue",             //its name
+                                    	logicIRing,             //its mother  volume
+                                    	false,                 //no boolean operation
+                                    	0,                 //copy number
+                                      checkOverlaps);       // checking overlaps
   }} // end of cryst
   
   
-  //Vikuity on front crystal face - only include if doing a single-readout geometry
-  G4ThreeVector position_seperator_block = G4ThreeVector(ring_R1 - 0.0425*mm,0,0);
-  G4Transform3D seperator_block_transform = G4Transform3D(rotm_crys,position_seperator_block);
-  new G4PVPlacement(seperator_block_transform,             //rotation,position
-	                 logicPolyBlock,            //its logical volume
-	                 "seperatorBlock",             //its name
-	                 logicIRing,             //its mother  volume
-	                 false,                 //no boolean operation
-	                 0,                 //copy number
-	                 checkOverlaps);       // checking overlaps
+  ////Vikuity on front crystal face - only include if doing a single-readout geometry
+  //G4ThreeVector position_seperator_block = G4ThreeVector(ring_R1 - 0.0425*mm,0,0);
+  //G4Transform3D seperator_block_transform = G4Transform3D(rotm_crys,position_seperator_block);
+  //new G4PVPlacement(seperator_block_transform,             //rotation,position
+	                 //logicPolyBlock,            //its logical volume
+	                 //"seperatorBlock",             //its name
+	                 //logicIRing,             //its mother  volume
+	                 //false,                 //no boolean operation
+	                 //0,                 //copy number
+	                 //checkOverlaps);       // checking overlaps
 
   for (G4int imod_radial = 0; imod_radial < 1 ; imod_radial++){
     G4double mod_phi = (imod_radial-1)*dPhi;
