@@ -76,7 +76,7 @@ void PETPhysicsList::ConstructOp() {
   fCerenkovProcess->SetTrackSecondariesFirst(true);
 
   fScintillationProcess = new G4Scintillation("Scintillation");
-  fScintillationProcess->SetScintillationYieldFactor(1.);
+  //fScintillationProcess->SetScintillationYieldFactor(1.);
   fScintillationProcess->SetTrackSecondariesFirst(true);
 
   fAbsorptionProcess = new G4OpAbsorption();
@@ -93,8 +93,9 @@ void PETPhysicsList::ConstructOp() {
 
   // Use Birks Correction in the Scintillation process
   if (G4Threading::IsMasterThread()) {
-    G4EmSaturation *emSaturation = G4LossTableManager::Instance()->EmSaturation();
-    fScintillationProcess->AddSaturation(emSaturation);
+    //G4EmSaturation *emSaturation = G4LossTableManager::Instance()->EmSaturation();
+    //fScintillationProcess->SetScintillationByParticleType(1);
+    //fScintillationProcess->AddSaturation(emSaturation);
   }
 
   auto particleIterator = GetParticleIterator();
@@ -118,6 +119,8 @@ void PETPhysicsList::ConstructOp() {
       pmanager->AddDiscreteProcess(fRayleighScatteringProcess);
       pmanager->AddDiscreteProcess(fMieHGScatteringProcess);
       pmanager->AddDiscreteProcess(fBoundaryProcess);
+      G4StepLimiter* stepLimiter = new G4StepLimiter();
+      pmanager->AddDiscreteProcess(stepLimiter);
     }
   }
 }
