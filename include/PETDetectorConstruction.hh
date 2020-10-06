@@ -8,6 +8,7 @@
 #include "G4Material.hh"
 #include "G4Tubs.hh"
 #include "G4Box.hh"
+#include "G4Sphere.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
@@ -58,6 +59,8 @@ private:
   G4Box *waterBox;
   G4LogicalVolume *waterLog;
   G4VPhysicalVolume *waterPhy;
+  
+  G4UserLimits* fStepLimit;            // pointer to user step limits
 
 
 
@@ -80,11 +83,29 @@ private:
   G4Material *fYttriumOxide;
   G4Material *fSiliconDioxide;
   G4Material *fGel;
+  G4Material *fPolystyrene;
+  G4Material *fBariumSulfate;
+  G4Material *fTitaniumDioxide;
+  G4Material *fGlue;
+  G4Material *fResin;
+  G4Material *fCircuitBoard;
+  G4Material *fLead;
   G4MaterialPropertiesTable *fLYSO_MPT;
   G4MaterialPropertiesTable *fAir_MPT;
   G4MaterialPropertiesTable *fGel_MPT;
   G4MaterialPropertiesTable *fBGO_MPT;
+  G4MaterialPropertiesTable *fGlue_MPT;
   G4MaterialPropertiesTable *fTeflon_MPT;
+  G4MaterialPropertiesTable *fPoly_MPT;
+  G4MaterialPropertiesTable *fBariumSulfate_MPT;
+  G4MaterialPropertiesTable *fTitaniumDioxide_MPT;
+  G4MaterialPropertiesTable* fPlasticSurface_MPT;
+  G4MaterialPropertiesTable* fBaSO4Surface_MPT;
+  G4MaterialPropertiesTable* fTiO2Surface_MPT;
+  G4MaterialPropertiesTable* fCrystalSurface_MPT;
+  G4MaterialPropertiesTable* fCircuitBoard_MPT;
+  G4MaterialPropertiesTable* fLead_MPT;
+  G4VProcess* fPhotoElectric;
 
   PETDetectorMessenger *fMessenger;
 };
