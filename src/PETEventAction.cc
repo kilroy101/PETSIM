@@ -55,16 +55,16 @@ void PETEventAction::EndOfEventAction(const G4Event *event) {
       G4double energy = HitVector->at(ihit)->GetEnergy();
       G4ThreeVector photonArrive = HitVector->at(ihit)->GetArrivalPos();
       G4double time = HitVector->at(ihit)->GetArrivalTime();
-      G4double wavelength = 1242.38 / (energy/eV);
+      G4double wavelength = 1239.842 / (energy/eV);
       G4double xpos = photonArrive.x();
       G4double ypos = photonArrive.y();
       G4double zpos = photonArrive.z();
-      //std::ofstream myfile2("time_2.txt", std::ios_base::app);
-      //myfile2 << EventID << ","<<energy<<","<<xpos<<","<<ypos<<","<<zpos<<","<<time<<std::endl;
+      //std::ofstream myfile2("Hits3x315.txt", std::ios_base::app);
+      //myfile2 << EventID << ","<< wavelength << ","<<xpos<<","<<ypos<<","<<zpos<<","<<time<<std::endl;
       //myfile2.close();
-      fRunAction->FillEventHitTree(EventID, energy, wavelength, xpos, ypos, zpos, time);
+      //fRunAction->FillEventHitTree(EventID, energy, wavelength, xpos, ypos, zpos, time);
 
-      //      std::cout<<"Number of Hits =  " <<n_hit<<std::endl;
+            //std::cout<<"Number of Hits =  " <<n_hit<<std::endl;
     }
   }
 

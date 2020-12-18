@@ -194,7 +194,7 @@ void PETDetectorConstruction::BuildMaterial() {
     fLYSO_MPT->AddProperty("ABSLENGTH", ene, abs, num);
     fLYSO_MPT->AddConstProperty("SCINTILLATIONYIELD", 33200 / MeV);
     //fLYSO_MPT->AddProperty("ELECTRONSCINTILLATIONYIELD", bigEnergies,scintYields,numBigEnergies);
-    fLYSO_MPT->AddConstProperty("RESOLUTIONSCALE", 1.0);
+    fLYSO_MPT->AddConstProperty("RESOLUTIONSCALE", 5.555);
     fLYSO_MPT->AddConstProperty("FASTTIMECONSTANT", 43 * ns);
     
     
@@ -244,15 +244,17 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
         G4SolidStore::GetInstance()->Clean();
     }
 
-    G4double cryst_dx = 3.0*mm, cryst_dy = 3.0*mm, cryst_dz = 15*mm;
-    G4double det_dx = 3*mm, det_dy = 3*mm, det_dz = 1*mm;
-    G4double gap_c = 0.2*mm;
+    G4double cryst_dx = (3.135-0.130)*mm, cryst_dy = (3.135-0.130)*mm, cryst_dz = 30*mm;
+    G4double det_dx = (3-0.0)*mm, det_dy = (3-0.0)*mm, det_dz = 1*mm;
+    G4double sep_thickness = 0.195*mm;
+    //G4double sep_thickness = 0.05*mm;
+    G4double gap_c = cryst_dx + sep_thickness - det_dx;
     G4double Glue_dz = 0.1*mm;
     G4double front_board_dz = 2*mm;
 
     G4int nb_block =44;
     G4int nb_crys = 8, nb_gels = nb_crys+1;
-    G4double block_dx = nb_crys*cryst_dx+nb_gels*gap_c, block_dy = nb_crys*cryst_dx+nb_gels*gap_c, block_dz = cryst_dz+det_dz+Glue_dz;//+0.150*mm; if including resin
+    G4double block_dx = nb_crys*cryst_dx+nb_gels*sep_thickness, block_dy = nb_crys*cryst_dx+nb_gels*sep_thickness, block_dz = cryst_dz+2*det_dz+2*Glue_dz;//+0.150*mm; if including resin
     G4int nb_rings = 8;
     //
     G4double dPhi = twopi/nb_block, half_dPhi=0.5*dPhi;
@@ -271,11 +273,13 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     worldLog = new G4LogicalVolume(worldBox, fAir, "WorldLog");
     worldPhy = new G4PVPlacement(0, G4ThreeVector(), worldLog, "WorldPhy", 0, false, 0, checkOverlaps);
 
-    G4Tubs* solidIRing = new G4Tubs("RingI", ring_R1-5*mm, ring_R2+5*mm , 5*block_dy + 5*mm, 0.,twopi);//-half_dPhi, dPhi
+    G4Tubs* solidIRing = new G4Tubs("RingI", 0, ring_R2+5*mm , 15*block_dy + 5*mm, 0.,twopi);//-half_dPhi, dPhi
     //G4Tubs* solidIRing = new G4Tubs("RingI", ring_R1-5*mm, ring_R2+5*mm , 0.5*block_dy+5*mm, 0.,twopi);//-half_dPhi, dPhi
       G4LogicalVolume* logicIRing = new G4LogicalVolume(solidIRing, fAir,"RingI");
+      
 
     G4Box* solidCryst = new G4Box("crystal", cryst_dx/2, cryst_dy/2, (cryst_dz)/2);
+    //G4Box* solidCryst = new G4Box("crystal", (cryst_dx /2 - 0.005*mm)/2, (cryst_dy /2 - 0.005*mm)/2, (cryst_dz)/2);
     G4LogicalVolume* logicCryst = new G4LogicalVolume(solidCryst,fLYSO,"CrystalLV");
 
     G4Box* solidDet_outer = new G4Box("detector",  det_dx/2, det_dy/2, det_dz/2);
@@ -292,31 +296,33 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     G4LogicalVolume* logicDet_inside_top = new G4LogicalVolume(solidDet_Inside_top, fGel, "detector");
     G4LogicalVolume* logicDet_inside_side = new G4LogicalVolume(solidDet_Inside_side,fGel,"detector");
 
-    G4Box* solidPolySide = new G4Box("PolySide",(0.065*mm)/2,(block_dy-0.2*mm)/2,block_dz/2);
-    G4Box* solidPolyTop = new G4Box("PolyTop",(block_dx-0.2*mm)/2,0.065*mm/2,block_dz/2);
+    G4Box* solidPolySide = new G4Box("PolySide",(sep_thickness - 0.001*mm)/2,block_dy/2,block_dz/2);
+    G4Box* solidPolyTop = new G4Box("PolyTop",block_dx/2,(sep_thickness-0.001*mm)/2,block_dz/2);
+	//G4Box* solidPolySide = new G4Box("PolySide",(sep_thickness - 0.001*mm)/2,block_dy/2,cryst_dz/2);
+    //G4Box* solidPolyTop = new G4Box("PolyTop",block_dx/2,(sep_thickness-0.001*mm)/2,cryst_dz/2);
     G4LogicalVolume* logicPolyTop = new G4LogicalVolume(solidPolyTop, fPolystyrene, "PolyTopLV");
     G4LogicalVolume* logicPolySide = new G4LogicalVolume(solidPolySide,fPolystyrene,"PolySideLV");
-    G4Box* solidPolyBlock = new G4Box("PolyBlock", block_dx/2, block_dy/2, 0.065*mm/2);
+    G4Box* solidPolyBlock = new G4Box("PolyBlock", block_dx/2, block_dy/2, (sep_thickness - 0.001*mm)/2);
     G4LogicalVolume* logicPolyBlock = new G4LogicalVolume(solidPolyBlock, fPolystyrene, "PolyBlockLV");
 
-    G4Box* solidBaSO4Side = new G4Box("BaSO4Side",0.085*mm/2,block_dy/2,block_dz/2);
-    G4Box* solidBaSO4Top = new G4Box("BaSO4Top",block_dx/2,0.085*mm/2,block_dz/2);
+    G4Box* solidBaSO4Side = new G4Box("BaSO4Side",sep_thickness/2,block_dy/2,block_dz/2);
+    G4Box* solidBaSO4Top = new G4Box("BaSO4Top",block_dx/2,sep_thickness/2,block_dz/2);
     G4LogicalVolume* logicBaSO4Top = new G4LogicalVolume(solidBaSO4Top, fBariumSulfate, "BaSO4TopLV");
     G4LogicalVolume* logicBaSO4Side = new G4LogicalVolume(solidBaSO4Side,fBariumSulfate,"BaSO4SideLV");
-    G4Box* solidBaSO4Block = new G4Box("BaSO4Block", block_dx/2, block_dy/2, 0.085*mm/2);
+    G4Box* solidBaSO4Block = new G4Box("BaSO4Block", block_dx/2, block_dy/2, sep_thickness/2);
     G4LogicalVolume* logicBaSO4Block = new G4LogicalVolume(solidBaSO4Block, fBariumSulfate, "BaSO4BlockLV");
     
-	G4Box* solidTiO2Side = new G4Box("TiO2Side",0.085*mm/2,block_dy/2,block_dz/2);
-    G4Box* solidTiO2Top = new G4Box("TiO2Top",block_dx/2,0.085*mm/2,block_dz/2);
+	G4Box* solidTiO2Side = new G4Box("TiO2Side",sep_thickness/2,block_dy/2,block_dz/2);
+    G4Box* solidTiO2Top = new G4Box("TiO2Top",block_dx/2,sep_thickness/2,block_dz/2);
     G4LogicalVolume* logicTiO2Top = new G4LogicalVolume(solidTiO2Top, fTitaniumDioxide, "TiO2TopLV");
     G4LogicalVolume* logicTiO2Side = new G4LogicalVolume(solidTiO2Side,fTitaniumDioxide,"TiO2SideLV");
-    G4Box* solidTiO2Block = new G4Box("TiO2Block", block_dx/2, block_dy/2, 0.085*mm/2);
+    G4Box* solidTiO2Block = new G4Box("TiO2Block", block_dx/2, block_dy/2, sep_thickness/2);
     G4LogicalVolume* logicTiO2Block = new G4LogicalVolume(solidTiO2Block, fTitaniumDioxide, "TiO2BlockLV");
 
-    G4Box* solidResin = new G4Box("Resin", cryst_dx/2, cryst_dy/2, 0.150*mm/2);
+    G4Box* solidResin = new G4Box("Resin", det_dx/2, det_dy/2, 0.150*mm/2);
     G4LogicalVolume* logicResin =  new G4LogicalVolume(solidResin, fGel, "Resin");
 
-    G4Box* solidGlue = new G4Box("Glue", cryst_dx/2, cryst_dy/2, Glue_dz/2);
+    G4Box* solidGlue = new G4Box("Glue", det_dx/2, det_dy/2, Glue_dz/2);
     G4LogicalVolume* logicGlue =  new G4LogicalVolume(solidGlue, fGlue, "Glue");
     
     G4Box* solidFrontBoard = new G4Box("CircuitBoard", cryst_dx/2, cryst_dy/2, front_board_dz/2);
@@ -350,7 +356,7 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 	opCrystalSurface->SetSigmaAlpha(sigma_alphaPolished);
 	opCrystalSurface->SetMaterialPropertiesTable(fCrystalSurface_MPT);
 	//ONLY set crystal skin surface if using Vikuiti/air coupled separator, to set sigmaalpha at crystal-air interface.
-	G4LogicalSkinSurface* crystalSurface = new G4LogicalSkinSurface("Crystal Surface", logicCryst, opCrystalSurface);
+	//G4LogicalSkinSurface* crystalSurface = new G4LogicalSkinSurface("Crystal Surface", logicCryst, opCrystalSurface);
 
 	
 	//Defining surface properties of detectors
@@ -432,6 +438,7 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
       opTiO2Surface->SetMaterialPropertiesTable(fTiO2Surface_MPT);
     G4LogicalSkinSurface* TiO2Surface_T = new G4LogicalSkinSurface("TiO2 Surface", logicTiO2Top, opTiO2Surface);
     G4LogicalSkinSurface* TiO2Surface_S = new G4LogicalSkinSurface("TiO2 Surface", logicTiO2Side, opTiO2Surface);
+    G4LogicalSkinSurface* TiO2Surface_B = new G4LogicalSkinSurface("TiO2 Surface", logicTiO2Block, opTiO2Surface);
 
   G4RotationMatrix rotm_head  = G4RotationMatrix();
   rotm_head.rotateY(90*deg);
@@ -498,10 +505,237 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
                           //0,                 //copy number
                           //checkOverlaps);  
 
-  for (G4int ringIndex = 0; ringIndex < 1; ringIndex++){
-		  //G4double ringZ = (ringIndex-4) * block_dx;
-		  G4double ringZ = 0;
-		  for (G4int blockIndex = 0; blockIndex < 1; blockIndex ++){
+//Adding the corona
+//Defining the CopyNumber for each crystal and detector: CopyNumber has either 6 or 7 digits (7 only if in the corona).
+//The first digit runs from 0 to 9. If this digit is from 0 to 7, it tells the ring in the barrel along which the crystal/detector is located.
+//If the first digit is an 8, then the crystal/detector is in the chin section. If it is a 9, then it is in the corona (and there will be 7 digits)
+//For those in the barrel, the second and third digits run from 00 to 43, and they tell the module along the ring. For detectors, the fourth digit is either a 0 or a 1. If a 0, it is a front detector; if a 1, it is a back detector.
+//For those in the chin section, the second and third digits run from 00 to 35, and they tell the module of the section, where from the axial view looking down through the corona where the chin module is to the right of the page, 00 is the top left module.
+//and 35 is the bottom right module (sequence left to right and then top to bottom).
+//For those in the corona, the second, third, and fourth digits run from 00 to 143 and similarly tell the module of the corona, where from the same view as for the chin 00 is the top left and 143 the bottom right.
+//The 3rd to last digit is 1 for back detectors and 0 for crystals and front detectors.
+//The last 2 digits run from 00 to 63, and they tell the location of the crystal/detector within the 8x8 module, running from left to right and top to bottom.
+
+G4double coronaZ = 11.3*cm - 0.5*block_dx;
+G4RotationMatrix rotm_corona  = G4RotationMatrix();
+
+for (G4int xmoduleIndex = 0; xmoduleIndex < 12; xmoduleIndex++){
+	G4double xmodule = (xmoduleIndex - 6) * block_dx;
+	for (G4int ymoduleIndex = 0; ymoduleIndex < 12; ymoduleIndex++){
+		G4double ymodule = (ymoduleIndex - 6) * block_dx;
+		for (G4int xcrystIndex = 0; xcrystIndex < nb_crys; xcrystIndex++){
+			for (G4int ycrystIndex = 0; ycrystIndex < nb_crys; ycrystIndex++){
+							  G4int CoronaCrysCopyNumber = 9000000 + (xmoduleIndex + 12*ymoduleIndex)*1000 + 0*100 + (xcrystIndex + nb_crys * ycrystIndex);
+						      G4ThreeVector position_corona_cryst = G4ThreeVector(xmodule + (0.5 + xcrystIndex)*(det_dx+gap_c),
+						                                                     ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+						                                                     coronaZ + det_dz + Glue_dz + 0.5*cryst_dz); 
+						      G4Transform3D transform_corona_cryst = G4Transform3D(rotm_corona,position_corona_cryst);
+						      new G4PVPlacement(transform_corona_cryst,             //rotation,position
+						                          logicCryst,            //its logical volume
+						                          "crystal",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          CoronaCrysCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						            
+						      G4int CoronaOuterDetCopyNumber = 9000000 + (xmoduleIndex + 12*ymoduleIndex)*1000 + 1*100 + (xcrystIndex + nb_crys * ycrystIndex);                   
+						      G4ThreeVector position_corona_det_outer = G4ThreeVector(xmodule + (0.5 + xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			coronaZ + det_dz + Glue_dz + cryst_dz + Glue_dz + 0.5*det_dz);
+							  G4Transform3D transform_corona_det_outer = G4Transform3D(rotm_corona,position_corona_det_outer);
+						      new G4PVPlacement(transform_corona_det_outer,             //rotation,position
+						                          logicDet_outer,            //its logical volume
+						                          "detector",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          CoronaOuterDetCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						                          
+							  G4int CoronaInnerDetCopyNumber = 9000000 + (xmoduleIndex + 12*ymoduleIndex)*1000 + 0*100 + (xcrystIndex + nb_crys * ycrystIndex);                   
+						      G4ThreeVector position_corona_det_inner = G4ThreeVector(xmodule + (0.5 + xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			coronaZ + 0.5*det_dz);
+							  G4Transform3D transform_corona_det_inner = G4Transform3D(rotm_corona,position_corona_det_inner);
+						      new G4PVPlacement(transform_corona_det_inner,             //rotation,position
+						                          logicDet_outer,            //its logical volume
+						                          "detector",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          CoronaInnerDetCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						                          
+							  G4int CoronaOuterGlueCopyNumber = 1;                   
+						      G4ThreeVector position_corona_glue_outer = G4ThreeVector(xmodule + (0.5 + xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			coronaZ + det_dz + Glue_dz + cryst_dz + 0.5*Glue_dz);
+							  G4Transform3D transform_corona_glue_outer = G4Transform3D(rotm_corona,position_corona_glue_outer);
+						      new G4PVPlacement(transform_corona_glue_outer,             //rotation,position
+						                          logicGlue,            //its logical volume
+						                          "glue",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          CoronaOuterGlueCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						                          
+							  G4int CoronaInnerGlueCopyNumber = 1;                   
+						      G4ThreeVector position_corona_glue_inner = G4ThreeVector(xmodule + (0.5 + xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			coronaZ + det_dz + 0.5*Glue_dz);
+							  G4Transform3D transform_corona_glue_inner = G4Transform3D(rotm_corona,position_corona_glue_inner);
+						      new G4PVPlacement(transform_corona_glue_inner,             //rotation,position
+						                          logicGlue,            //its logical volume
+						                          "glue",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          CoronaInnerGlueCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps										                        						                          
+		
+		}}
+		
+		for (G4int  xGelIndex = 0; xGelIndex < nb_gels ; xGelIndex++){
+				      for (G4int yGelIndex = 0; yGelIndex < nb_gels ; yGelIndex++){
+				
+				        G4ThreeVector Corona_side_gel_position = G4ThreeVector(xmodule + (xGelIndex)*(det_dx+gap_c),
+				                                                     ymodule + 0.5*block_dx,
+				                                                     coronaZ + det_dz + Glue_dz + 0.5*cryst_dz);
+				
+				        G4ThreeVector Corona_top_gel_position = G4ThreeVector(xmodule + 0.5*block_dx,
+				                                                     ymodule + (yGelIndex)*(det_dy+gap_c),
+				                                                     coronaZ + det_dz + Glue_dz + 0.5*cryst_dz);
+				
+				
+				        G4Transform3D Corona_side_gel_transform = G4Transform3D(rotm_corona,Corona_side_gel_position);
+				        G4Transform3D Corona_top_gel_transform = G4Transform3D(rotm_corona,Corona_top_gel_position);
+				
+				
+				  new G4PVPlacement(Corona_side_gel_transform,
+				                    logicPolySide,
+				                    "gelSide",
+				                    logicIRing,false,1,checkOverlaps);
+				
+				
+				new G4PVPlacement(Corona_top_gel_transform,
+				                  logicPolyTop,"gelTop",
+				                  logicIRing,
+				                  false,1,checkOverlaps);
+				
+				
+				    }}
+}}
+
+
+//Adding the chin
+G4double chinZ = -26.1*cm - 0.5*block_dx;
+G4RotationMatrix rotm_chin  = G4RotationMatrix();
+for (G4int xmoduleIndex = 0; xmoduleIndex < 6; xmoduleIndex++){
+	G4double xmodule = xmoduleIndex * block_dx;
+	for (G4int ymoduleIndex = 0; ymoduleIndex < 6; ymoduleIndex++){
+		G4double ymodule = (ymoduleIndex - 3) * block_dx;
+		for (G4int xcrystIndex = 0; xcrystIndex < nb_crys; xcrystIndex++){
+			for (G4int ycrystIndex = 0; ycrystIndex < nb_crys; ycrystIndex++){
+							  G4int chinCrysCopyNumber = 800000 + (xmoduleIndex + 6*ymoduleIndex)*1000 + 0*100 + (xcrystIndex + nb_crys * ycrystIndex);
+						      G4ThreeVector position_chin_cryst = G4ThreeVector(xmodule + (xcrystIndex)*(det_dx+gap_c),
+						                                                     ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+						                                                     chinZ + det_dz + Glue_dz + 0.5*cryst_dz); 
+						      G4Transform3D transform_chin_cryst = G4Transform3D(rotm_chin,position_chin_cryst);
+						      new G4PVPlacement(transform_chin_cryst,             //rotation,position
+						                          logicCryst,            //its logical volume
+						                          "crystal",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          chinCrysCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						            
+						      G4int chinOuterDetCopyNumber = 800000 + (xmoduleIndex + 6*ymoduleIndex)*1000 + 1*100 + (xcrystIndex + nb_crys * ycrystIndex);                   
+						      G4ThreeVector position_chin_det_outer = G4ThreeVector(xmodule + (xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			chinZ + det_dz + Glue_dz + cryst_dz + Glue_dz + 0.5*det_dz);
+							  G4Transform3D transform_chin_det_outer = G4Transform3D(rotm_chin,position_chin_det_outer);
+						      new G4PVPlacement(transform_chin_det_outer,             //rotation,position
+						                          logicDet_outer,            //its logical volume
+						                          "detector",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          chinOuterDetCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						                          
+							  G4int chinInnerDetCopyNumber = 800000 + (xmoduleIndex + 6*ymoduleIndex)*1000 + 0*100 + (xcrystIndex + nb_crys * ycrystIndex);                   
+						      G4ThreeVector position_chin_det_inner = G4ThreeVector(xmodule + (xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			chinZ + 0.5*det_dz);
+							  G4Transform3D transform_chin_det_inner = G4Transform3D(rotm_chin,position_chin_det_inner);
+						      new G4PVPlacement(transform_chin_det_inner,             //rotation,position
+						                          logicDet_outer,            //its logical volume
+						                          "detector",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          chinInnerDetCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						                          
+							  G4int chinOuterGlueCopyNumber = 1;                   
+						      G4ThreeVector position_chin_glue_outer = G4ThreeVector(xmodule + (xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			chinZ + det_dz + Glue_dz + cryst_dz + 0.5*Glue_dz);
+							  G4Transform3D transform_chin_glue_outer = G4Transform3D(rotm_chin,position_chin_glue_outer);
+						      new G4PVPlacement(transform_chin_glue_outer,             //rotation,position
+						                          logicGlue,            //its logical volume
+						                          "glue",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          chinOuterGlueCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps
+						                          
+							  G4int chinInnerGlueCopyNumber = 1;                   
+						      G4ThreeVector position_chin_glue_inner = G4ThreeVector(xmodule + ( xcrystIndex)*(det_dx+gap_c),
+																			ymodule + (0.5 + ycrystIndex)*(det_dy+gap_c),
+																			chinZ + det_dz + 0.5*Glue_dz);
+							  G4Transform3D transform_chin_glue_inner = G4Transform3D(rotm_chin,position_chin_glue_inner);
+						      new G4PVPlacement(transform_chin_glue_inner,             //rotation,position
+						                          logicGlue,            //its logical volume
+						                          "glue",             //its name
+						                          logicIRing,             //its mother  volume
+						                          false,                 //no boolean operation
+						                          chinInnerGlueCopyNumber,                 //copy number
+						                          checkOverlaps);       // checking overlaps										                        						                          
+		
+		}}
+		
+		for (G4int  xGelIndex = 0; xGelIndex < nb_gels ; xGelIndex++){
+				      for (G4int yGelIndex = 0; yGelIndex < nb_gels ; yGelIndex++){
+				
+				        G4ThreeVector chin_side_gel_position = G4ThreeVector(xmodule + (xGelIndex - 0.5)*(det_dx+gap_c),
+				                                                     ymodule + 0.5*block_dx,
+				                                                     chinZ + det_dz + Glue_dz + 0.5*cryst_dz);
+				
+				        G4ThreeVector chin_top_gel_position = G4ThreeVector(xmodule + 0.5*block_dx - 0.5*(det_dx+gap_c),
+				                                                     ymodule + (yGelIndex)*(det_dy+gap_c),
+				                                                     chinZ + det_dz + Glue_dz + 0.5*cryst_dz);
+				
+				
+				        G4Transform3D chin_side_gel_transform = G4Transform3D(rotm_chin,chin_side_gel_position);
+				        G4Transform3D chin_top_gel_transform = G4Transform3D(rotm_chin,chin_top_gel_position);
+				
+				
+				  new G4PVPlacement(chin_side_gel_transform,
+				                    logicPolySide,
+				                    "gelSide",
+				                    logicIRing,false,1,checkOverlaps);
+				
+				
+				new G4PVPlacement(chin_top_gel_transform,
+				                  logicPolyTop,"gelTop",
+				                  logicIRing,
+				                  false,1,checkOverlaps);
+				
+				
+				    }}
+}}
+
+//Adding the main barrel
+  for (G4int ringIndex = 0; ringIndex < nb_rings; ringIndex++){
+		  G4double ringZ = (ringIndex-4) * block_dx;
+		  //G4double ringZ = 0;
+		  for (G4int blockIndex = 0; blockIndex < nb_block; blockIndex ++){
 				  G4double phi = blockIndex * dPhi;
 				  G4double Bx = (std::cos(phi))*(ring_R1+0.5*cryst_dz);
 				  G4double By = (std::sin(phi))*(ring_R1+0.5*cryst_dz);// its 0
@@ -532,7 +766,6 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 				    //for (G4int jcrys = 3; jcrys < 4 ; jcrys++){
 				for (G4int icrys = 0; icrys < nb_crys ; icrys++){
 				    for (G4int jcrys = 0; jcrys < nb_crys ; jcrys++){
-				      //G4int CrysCopyNumber = (jcrys + nb_crys*icrys ) ;
 				      G4int CrysCopyNumber = ringIndex * 100000 + blockIndex*1000 +(jcrys + nb_crys*icrys ) ;
 				      G4ThreeVector position_cryst = G4ThreeVector(Bx+(3.5-icrys)*(det_dx+gap_c)*-sin(phi),//168.16*mm,// - (3.5-icrys)*det_dx*sin(phi),// +0.5*det_dz,
 				                                                     By+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
@@ -546,6 +779,54 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 				                          CrysCopyNumber,                 //copy number
 				                          checkOverlaps);       // checking overlaps
 				                          
+					  //G4ThreeVector position_cryst1 = G4ThreeVector(Bx+(3.5-icrys)*(det_dx+gap_c)*-sin(phi),//168.16*mm,// - (3.5-icrys)*det_dx*sin(phi),// +0.5*det_dz,
+				                                                     //By+(3.5-icrys)*(det_dx+gap_c)*cos(phi) - cryst_dx/4,
+				                                                     //ringZ + (3.5-jcrys)*(det_dx+gap_c) - cryst_dx/4); 
+				      //G4Transform3D transform_cryst1 = G4Transform3D(rotm_crys,position_cryst1);
+				      //new G4PVPlacement(transform_cryst1,             //rotation,position
+				                          //logicCryst,            //its logical volume
+				                          //"crystal",             //its name
+				                          //logicIRing,             //its mother  volume
+				                          //false,                 //no boolean operation
+				                          //CrysCopyNumber,                 //copy number
+				                          //checkOverlaps);       // checking overlaps
+				                          
+					  //G4ThreeVector position_cryst2 = G4ThreeVector(Bx+(3.5-icrys)*(det_dx+gap_c)*-sin(phi),//168.16*mm,// - (3.5-icrys)*det_dx*sin(phi),// +0.5*det_dz,
+				                                                     //By+(3.5-icrys)*(det_dx+gap_c)*cos(phi) +cryst_dx/4,
+				                                                     //ringZ + (3.5-jcrys)*(det_dx+gap_c) - cryst_dx/4); 
+				      //G4Transform3D transform_cryst2 = G4Transform3D(rotm_crys,position_cryst2);
+				      //new G4PVPlacement(transform_cryst2,             //rotation,position
+				                          //logicCryst,            //its logical volume
+				                          //"crystal",             //its name
+				                          //logicIRing,             //its mother  volume
+				                          //false,                 //no boolean operation
+				                          //CrysCopyNumber,                 //copy number
+				                          //checkOverlaps);       // checking overlaps
+				                          
+					  //G4ThreeVector position_cryst3 = G4ThreeVector(Bx+(3.5-icrys)*(det_dx+gap_c)*-sin(phi),//168.16*mm,// - (3.5-icrys)*det_dx*sin(phi),// +0.5*det_dz,
+				                                                     //By+(3.5-icrys)*(det_dx+gap_c)*cos(phi) - cryst_dx/4,
+				                                                     //ringZ + (3.5-jcrys)*(det_dx+gap_c) + cryst_dx/4); 
+				      //G4Transform3D transform_cryst3 = G4Transform3D(rotm_crys,position_cryst3);
+				      //new G4PVPlacement(transform_cryst3,             //rotation,position
+				                          //logicCryst,            //its logical volume
+				                          //"crystal",             //its name
+				                          //logicIRing,             //its mother  volume
+				                          //false,                 //no boolean operation
+				                          //CrysCopyNumber,                 //copy number
+				                          //checkOverlaps);       // checking overlaps
+				                          
+					//G4ThreeVector position_cryst4 = G4ThreeVector(Bx+(3.5-icrys)*(det_dx+gap_c)*-sin(phi),//168.16*mm,// - (3.5-icrys)*det_dx*sin(phi),// +0.5*det_dz,
+				                                                     //By+(3.5-icrys)*(det_dx+gap_c)*cos(phi) + cryst_dx/4,
+				                                                     //ringZ + (3.5-jcrys)*(det_dx+gap_c) + cryst_dx/4); 
+				      //G4Transform3D transform_cryst4 = G4Transform3D(rotm_crys,position_cryst4);
+				      //new G4PVPlacement(transform_cryst4,             //rotation,position
+				                          //logicCryst,            //its logical volume
+				                          //"crystal",             //its name
+				                          //logicIRing,             //its mother  volume
+				                          //false,                 //no boolean operation
+				                          //CrysCopyNumber,                 //copy number
+				                          //checkOverlaps);       // checking overlaps				                          				                          				                          				                          
+				                          
 				     //Allows adjustment of max step size in the crystal.
 					//G4double maxStep = 0.5*mm;
 				    //fStepLimit = new G4UserLimits(maxStep);
@@ -553,15 +834,15 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 				
 				}}
 				
-				    for (G4int  igel = 1; igel < nb_gels ; igel++){
-				      for (G4int jgel = 1; jgel < nb_gels ; jgel++){
+				    for (G4int  igel = 0; igel < nb_gels ; igel++){
+				      for (G4int jgel = 0; jgel < nb_gels ; jgel++){
 				
 				        G4ThreeVector Side_gel_position = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
 				                                                     By,
-				                                                     ringZ + (4-jgel)*(det_dx+gap_c)+0.0575*mm);
+				                                                     ringZ + (4-jgel)*(det_dx+gap_c));
 				
-				        G4ThreeVector Top_gel_position = G4ThreeVector(Bx+((4-igel)*(det_dx+gap_c)+0.0575*mm)*-sin(phi),
-				                                                     By+((4-igel)*(det_dx+gap_c)+0.0575*mm)*cos(phi),
+				        G4ThreeVector Top_gel_position = G4ThreeVector(Bx+((4-igel)*(det_dx+gap_c))*-sin(phi),
+				                                                     By+((4-igel)*(det_dx+gap_c))*cos(phi),
 				                                                     ringZ + 0);
 				
 				
@@ -580,38 +861,83 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 				                  logicIRing,
 				                  false,jgel,checkOverlaps);
 				
+				
+				        //G4ThreeVector Side_gel_position1 = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
+				                                                     //By,
+				                                                     //ringZ + (4-jgel)*(det_dx+gap_c));
+				
+				        //G4ThreeVector Top_gel_position1 = G4ThreeVector(Bx+((4-igel)*(det_dx+gap_c))*-sin(phi),
+				                                                     //By+((4-igel)*(det_dx+gap_c))*cos(phi),
+				                                                     //ringZ + 0);
+				
+				        //G4ThreeVector Side_gel_position2 = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
+				                                                     //By,
+				                                                     //ringZ + (4-jgel)*(det_dx+gap_c) - cryst_dx/2);
+				
+				        //G4ThreeVector Top_gel_position2 = G4ThreeVector(Bx+((4-igel)*(det_dx+gap_c))*-sin(phi),
+				                                                     //By+((4-igel)*(det_dx+gap_c))*cos(phi) - cryst_dx/2,
+				                                                     //ringZ + 0);
+				
+				        //G4Transform3D Side_gel_transform1 = G4Transform3D(rotm_crys,Side_gel_position1);
+				        //G4Transform3D Top_gel_transform1 = G4Transform3D(rotm_crys,Top_gel_position1);
+				        //G4Transform3D Side_gel_transform2 = G4Transform3D(rotm_crys,Side_gel_position2);
+				        //G4Transform3D Top_gel_transform2 = G4Transform3D(rotm_crys,Top_gel_position2);
+				
+				
+				  //new G4PVPlacement(Side_gel_transform1,
+				                    //logicPolySide,
+				                    //"gelSide",
+				                    //logicIRing,false,igel,checkOverlaps);
+				
+				
+				//new G4PVPlacement(Top_gel_transform1,
+				                  //logicPolyTop,"gelTop",
+				                  //logicIRing,
+				                  //false,jgel,checkOverlaps);
+				                  
+				  //new G4PVPlacement(Side_gel_transform2,
+				                    //logicPolySide,
+				                    //"gelSide",
+				                    //logicIRing,false,igel,checkOverlaps);
+				
+				
+				//new G4PVPlacement(Top_gel_transform2,
+				                  //logicPolyTop,"gelTop",
+				                  //logicIRing,
+				                  //false,jgel,checkOverlaps);				        
 				
 				    }}//end of gels
 				
-				    for (G4int  igel = 0; igel < nb_gels-1; igel++){
-				      for (G4int jgel = 0; jgel < nb_gels-1 ; jgel++){
+				////These next separator placements are an artifact of when crystals were of cross sectional size 3x3, so multiple layers of separator were placed between each crystal.
+				    //for (G4int  igel = 0; igel < nb_gels-1; igel++){
+				      //for (G4int jgel = 0; jgel < nb_gels-1 ; jgel++){
 				
-				        G4ThreeVector Side_gel_position = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
-				                                                     By,
-				                                                     ringZ + (4-jgel)*(det_dx+gap_c)-0.0575*mm);
+				        //G4ThreeVector Side_gel_position = G4ThreeVector(Bx,//+0.5*det_dz,//- (3.5-icrys)*det_dx*sin(phi),
+				                                                     //By,
+				                                                     //ringZ + (4-jgel)*(det_dx+gap_c)-0.0575*mm);
 				
-				        G4ThreeVector Top_gel_position = G4ThreeVector(Bx+((4-igel)*(det_dx+gap_c)-0.0575*mm)*-sin(phi),
-				                                                     By+((4-igel)*(det_dx+gap_c)-0.0575*mm)*cos(phi),
-				                                                     ringZ + 0);
-				
-				
-				        G4Transform3D Side_gel_transform = G4Transform3D(rotm_crys,Side_gel_position);
-				        G4Transform3D Top_gel_transform = G4Transform3D(rotm_crys,Top_gel_position);
+				        //G4ThreeVector Top_gel_position = G4ThreeVector(Bx+((4-igel)*(det_dx+gap_c)-0.0575*mm)*-sin(phi),
+				                                                     //By+((4-igel)*(det_dx+gap_c)-0.0575*mm)*cos(phi),
+				                                                     //ringZ + 0);
 				
 				
-				  new G4PVPlacement(Side_gel_transform,
-				                    logicPolySide,
-				                    "gelSide",
-				                    logicIRing,false,igel,checkOverlaps);
+				        //G4Transform3D Side_gel_transform = G4Transform3D(rotm_crys,Side_gel_position);
+				        //G4Transform3D Top_gel_transform = G4Transform3D(rotm_crys,Top_gel_position);
 				
 				
-				new G4PVPlacement(Top_gel_transform,
-				                  logicPolyTop,"gelTop",
-				                  logicIRing,
-				                  false,jgel,checkOverlaps);
+				  //new G4PVPlacement(Side_gel_transform,
+				                    //logicPolySide,
+				                    //"gelSide",
+				                    //logicIRing,false,igel,checkOverlaps);
 				
 				
-				    }}
+				//new G4PVPlacement(Top_gel_transform,
+				                  //logicPolyTop,"gelTop",
+				                  //logicIRing,
+				                  //false,jgel,checkOverlaps);
+				
+				
+				    //}}
 				
 				    //for (G4int  icrys = 3; icrys < 4; icrys++){
 				      //for (G4int jcrys = 3; jcrys < 4 ; jcrys++){
@@ -619,7 +945,7 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 				      for (G4int jcrys = 0; jcrys < nb_crys ; jcrys++){
 				
 				  //G4int OutdetCopyNumber = jcrys + nb_crys*icrys+64;
-				  G4int OutdetCopyNumber = ringIndex * 100000 + blockIndex*1000 + 100 + (jcrys + nb_crys*icrys+64);
+				  G4int OutdetCopyNumber = ringIndex * 100000 + blockIndex*1000 + 100 + (jcrys + nb_crys*icrys);
 				  //Without resin. Add 0.150*mm to x position if needed.
 				  G4ThreeVector position_out_det = G4ThreeVector(ODx+(3.5-icrys)*(det_dx+gap_c)*-sin(phi), //- 0.03*cryst_dz,//172.41*mm,//+det_dz- (3.5-icrys)*det_dx*sin(phi),
 				                                                  ODy+(3.5-icrys)*(det_dx+gap_c)*cos(phi),
@@ -684,28 +1010,28 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 				                                                  ringZ + (3.5-jcrys)*(det_dx+gap_c));
 				  G4Transform3D transform_front_board = G4Transform3D(rotm_out,position_front_board);
 									
-									  //new G4PVPlacement(transform_in_det,             //rotation,position
-									                    //logicDet_outer,            //its logical volume
-									                    //"detector",             //its name
-									                    //logicIRing,             //its mother  volume
-									                    //false,                 //no boolean operation
-									                    //IndetCopyNumber,                 //copy number
-									                    //checkOverlaps);       // checking overlaps
+									  new G4PVPlacement(transform_in_det,             //rotation,position
+									                    logicDet_outer,            //its logical volume
+									                    "detector",             //its name
+									                    logicIRing,             //its mother  volume
+									                    false,                 //no boolean operation
+									                    IndetCopyNumber,                 //copy number
+									                    checkOverlaps);       // checking overlaps
 				
-				                    ////new G4PVPlacement(transform_in_resin,             //rotation,position
-				                                      ////logicResin,            //its logical volume
-				                                   		////"Resin",             //its name
-				                                   		////logicIRing,             //its mother  volume
-				                                   		////false,                 //no boolean operation
-				                                   		////0,                 //copy number
-				                                      ////checkOverlaps);       // checking overlaps
-				                    //new G4PVPlacement(transform_in_glue,             //rotation,position
-				                                      //logicGlue,            //its logical volume
-				                                    	//"Glue",             //its name
-				                                    	//logicIRing,             //its mother  volume
-				                                    	//false,                 //no boolean operation
-				                                    	//0,                 //copy number
+				                    //new G4PVPlacement(transform_in_resin,             //rotation,position
+				                                      //logicResin,            //its logical volume
+				                                   		//"Resin",             //its name
+				                                   		//logicIRing,             //its mother  volume
+				                                   		//false,                 //no boolean operation
+				                                   		//0,                 //copy number
 				                                      //checkOverlaps);       // checking overlaps
+				                    new G4PVPlacement(transform_in_glue,             //rotation,position
+				                                      logicGlue,            //its logical volume
+				                                    	"Glue",             //its name
+				                                    	logicIRing,             //its mother  volume
+				                                    	false,                 //no boolean operation
+				                                    	0,                 //copy number
+				                                      checkOverlaps);       // checking overlaps
 				                                   
 									//new G4PVPlacement(transform_front_board,             //rotation,position
 				                                      //logicFrontBoard,            //its logical volume
@@ -718,16 +1044,16 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
 				  
 				
 				  
-				  //Vikuity on front crystal face - only include if doing a single-readout geometry
-				  G4ThreeVector position_seperator_block = G4ThreeVector((ring_R1 - 0.0425*mm)*cos(phi), (ring_R1 - 0.0425*mm)*sin(phi), ringZ);
-				  G4Transform3D seperator_block_transform = G4Transform3D(rotm_crys,position_seperator_block);
-				  new G4PVPlacement(seperator_block_transform,             //rotation,position
-					                 logicPolyBlock,            //its logical volume
-					                 "seperatorBlock",             //its name
-					                 logicIRing,             //its mother  volume
-					                 false,                 //no boolean operation
-					                 0,                 //copy number
-					                 checkOverlaps);       // checking overlaps
+				  ////Vikuity on front crystal face - only include if doing a single-readout geometry
+				  //G4ThreeVector position_seperator_block = G4ThreeVector((ring_R1 - 0.0425*mm)*cos(phi), (ring_R1 - 0.0425*mm)*sin(phi), ringZ);
+				  //G4Transform3D seperator_block_transform = G4Transform3D(rotm_crys,position_seperator_block);
+				  //new G4PVPlacement(seperator_block_transform,             //rotation,position
+					                 //logicPolyBlock,            //its logical volume
+					                 //"seperatorBlock",             //its name
+					                 //logicIRing,             //its mother  volume
+					                 //false,                 //no boolean operation
+					                 //0,                 //copy number
+					                 //checkOverlaps);       // checking overlaps
 			                 
 		 }//End of ring
 	 }//End of all rings

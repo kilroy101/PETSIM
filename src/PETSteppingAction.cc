@@ -200,7 +200,7 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
 	        //std::ofstream myfile5("DETECTORLOSS3x315.txt", std::ios_base::app);
 	        //myfile5 << EventID << "," << x << "," << y << "," << z << "," << PhotTime << "," << Wavelength_photon  << "," << Step_Number << "," << procName << std::endl;
 	        //myfile5.close();
-      //}
+      ////}
 	  //if(theTrack->GetCurrentStepNumber() == 1){
 	        //G4double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
 	        //G4double x  = thePrePoint->GetPosition().x();
