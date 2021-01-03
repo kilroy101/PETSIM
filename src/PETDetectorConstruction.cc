@@ -272,11 +272,11 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     //The outer radius of the barrel.
     G4double ring_R2 = ring_R1+cryst_dz+2*det_dz+2*glue_dz;
     //Defining the number of rows of crystal blocks in the corona section.
-    G4int numCoronaRows = 14;
+    const G4int numCoronaRows = 14;
     //For each row in the corona section, defining how many blocks there are.
     G4int numBlocksInCoronaRow[numCoronaRows] = {6, 10, 12, 12, 14, 14, 14, 14, 14, 14, 12, 12, 10, 6};
     //Defining the number of rows of crystal blocks in the chin section.
-    G4int numChinRows = 7;
+    const G4int numChinRows = 7;
     //For each row in the corona section, defining how many blocks there are.
     G4int numBlocksInChinRow[numChinRows] = {6, 10, 12, 12, 14, 14, 14};
 
