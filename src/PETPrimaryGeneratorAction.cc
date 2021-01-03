@@ -27,33 +27,33 @@ PETPrimaryGeneratorAction::~PETPrimaryGeneratorAction() {
 
 void PETPrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent) {
 
-  ////Shoot straight into a crystal
-  //G4double x0 = 0 * mm;
-  //G4double y0 = 0.6 * mm;
-  //G4double z0 = 0.6 * mm;
-  //G4double xMomentumDirection = 1;
-  //G4double yMomentumDirection = 0;
-  //G4double zMomentumDirection = 0;
-  //fParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
-  //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(xMomentumDirection, yMomentumDirection, zMomentumDirection)); 
-  //fParticleGun->GeneratePrimaryVertex(anEvent);
-  
-  //Randomize over all solid angle:
+  //Shoot straight into a crystal
   G4double x0 = 0 * mm;
   G4double y0 = 0 * mm;
-  G4double z0 = -12.8 * mm;
-  G4double theta = CLHEP::twopi * G4UniformRand();
-  G4double phi = CLHEP::pi *acos(1-2* G4UniformRand());
-  G4double xMomentumDirection = sin(phi)*cos(theta);
-  G4double yMomentumDirection = sin(phi)*sin(theta);
-  G4double zMomentumDirection = cos(phi);
+  G4double z0 = 0 * mm;
+  G4double xMomentumDirection = 1;
+  G4double yMomentumDirection = 0;
+  G4double zMomentumDirection = 0;
   fParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(xMomentumDirection, yMomentumDirection, zMomentumDirection)); 
   fParticleGun->GeneratePrimaryVertex(anEvent);
-  tParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
-  tParticleGun->SetParticleMomentumDirection(G4ThreeVector(-xMomentumDirection, -yMomentumDirection, -zMomentumDirection));
-  tParticleGun->SetParticleTime(1000*ns);
-  tParticleGun->GeneratePrimaryVertex(anEvent);
+  
+  ////Randomize over all solid angle:
+  //G4double x0 = 0 * mm;
+  //G4double y0 = 0 * mm;
+  //G4double z0 = - 50 * mm;
+  //G4double theta = CLHEP::twopi * G4UniformRand();
+  //G4double phi = CLHEP::pi *acos(1-2* G4UniformRand());
+  //G4double xMomentumDirection = sin(phi)*cos(theta);
+  //G4double yMomentumDirection = sin(phi)*sin(theta);
+  //G4double zMomentumDirection = cos(phi);
+  //fParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
+  //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(xMomentumDirection, yMomentumDirection, zMomentumDirection)); 
+  //fParticleGun->GeneratePrimaryVertex(anEvent);
+  //tParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
+  //tParticleGun->SetParticleMomentumDirection(G4ThreeVector(-xMomentumDirection, -yMomentumDirection, -zMomentumDirection));
+  //tParticleGun->SetParticleTime(1000*ns);
+  //tParticleGun->GeneratePrimaryVertex(anEvent);
   
   ////Randomize over central 8x8 array, including their outer gaps:
   //G4double x0 = 0 * mm;
