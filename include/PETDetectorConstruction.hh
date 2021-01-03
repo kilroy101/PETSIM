@@ -96,7 +96,7 @@ private:
   G4MaterialPropertiesTable *fBGO_MPT;
   G4MaterialPropertiesTable *fGlue_MPT;
   G4MaterialPropertiesTable *fTeflon_MPT;
-  G4MaterialPropertiesTable *fPoly_MPT;
+  G4MaterialPropertiesTable *fPolystyrene_MPT;
   G4MaterialPropertiesTable *fBariumSulfate_MPT;
   G4MaterialPropertiesTable *fTitaniumDioxide_MPT;
   G4MaterialPropertiesTable* fPlasticSurface_MPT;
