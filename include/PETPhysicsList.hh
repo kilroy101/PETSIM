@@ -8,6 +8,8 @@
 #include "G4OpAbsorption.hh"
 #include "G4OpRayleigh.hh"
 #include "G4OpMieHG.hh"
+#include "G4StepLimiter.hh"
+
 
 class G4Cerenkov;
 

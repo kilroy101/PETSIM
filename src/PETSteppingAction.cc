@@ -47,6 +47,7 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
   G4int EventID = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
 
   G4String CPName;
+
   G4double Secondary_Energy;
   G4double TotalSecondary_Energy;
   G4int gammaCounter=0;
@@ -54,7 +55,7 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
   G4int ParentID;
   G4int Step_Number = theTrack->GetCurrentStepNumber();
   G4double Energy_gamma = theTrack->GetTotalEnergy();
-
+  G4double hPlanckTimesc = 1239.842; //Planck's constant times the speed of light, in eV*nm
 
 
   //  if(theTrack->GetCreatorProcess()!=0){
@@ -72,8 +73,8 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
     //if(Energy_Loss!=0){
     //std::cout<<Step_Number<< "\t" <<Energy_Loss<< "\t" << Energy_Gamma <<std::endl;
     //std::ofstream myfile("gamma_energy.txt", std::ios_base::app);
-    //myfile << Step_Number  << "," << Energy_Loss << "," << Energy_Gamma << "," << x << "," << y << "," << z <<std::endl;
-    //myfile.close();
+    //myfile1 << Step_Number  << "," << Energy_Loss << "," << Energy_Gamma << "," << x << "," << y << "," << z <<std::endl;
+    //myfile1.close();
     //}
     //}
   //}
@@ -82,6 +83,8 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
 
   G4StepPoint* thePrePoint  = theStep->GetPreStepPoint();
   G4StepPoint* thePostPoint = theStep->GetPostStepPoint();
+  G4StepStatus Step_Status = thePostPoint->GetStepStatus();
+  G4String procName = thePostPoint->GetProcessDefinedStep()->GetProcessName();
 
   G4VPhysicalVolume* thePrePV  = thePrePoint->GetPhysicalVolume();
   G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
@@ -95,7 +98,6 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
     thePrePVname  = thePrePV->GetName();
     thePostPVname = thePostPV->GetName();
   }
-
 
   G4TouchableHistory* theTouchable = (G4TouchableHistory*)(thePostPoint->GetTouchable());
   G4int copyNumber = theTouchable->GetCopyNumber();
@@ -129,50 +131,108 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
 	  //case Detection:
 	  //	case 12:
 	  // Check if the photon hits the detector and process the hit if it does
-    if(theTrack->GetDefinition()==G4Electron::ElectronDefinition())
-      {
-        if (thePostPVname == "crystal") {
-        // theTrack = G4Step::GetPostStepPoint();
-        const G4ThreeVector EPos = theTrack->GetPosition();
-        G4double ETime = theTrack->GetLocalTime()/CLHEP::ns;
-          std::ofstream myfile4("Electron_Time_Tolerance.txt", std::ios_base::app);
-          myfile4 << EventID << "," << ETime << "," << EPos << std::endl;
-          myfile4.close();
-          }
+    //if(theTrack->GetDefinition()==G4Electron::ElectronDefinition())
+      //{
+        //if (thePostPVname == "crystal") {
+        //// theTrack = G4Step::GetPostStepPoint();
+        //const G4ThreeVector EPos = theTrack->GetPosition();
+        //G4double ETime = theTrack->GetGlobalTime()/CLHEP::ns;
+          //std::ofstream myfile2("Electron_Time_Tolerance.txt", std::ios_base::app);
+          //myfile2 << EventID << "," << ETime << "," << EPos << std::endl;
+          //myfile2.close();
+          //}
 
-      }
+      //}
 
  // Important according to Kyle
   if(theTrack->GetDefinition()==G4Gamma::GammaDefinition())
     {
-      if (thePostPVname == "crystal") {
+      //if (thePostPVname == "crystal") {
       // theTrack = G4Step::GetPostStepPoint();
       const G4ThreeVector GammaPos = theTrack->GetPosition();
-      G4double GammaTime = theTrack->GetLocalTime()/CLHEP::ns;
-        std::ofstream myfile4("Gamma_15_40x3_pix_time_g5.txt", std::ios_base::app);
-        myfile4 << EventID << "," << GammaTime << "," << GammaPos << std::endl;
-        myfile4.close();
-        }
+      G4double GammaTime = theTrack->GetGlobalTime()/CLHEP::ns;
+      G4double GammaEnergy = theTrack->GetTotalEnergy() / CLHEP::keV;
+        std::ofstream myfile3("Gamma3x315.txt", std::ios_base::app);
+        myfile3 << EventID << "," << GammaTime << "," << GammaEnergy << "," << GammaPos << "," << thePrePVname << "," << thePostPVname << std::endl;
+        myfile3.close();
+        //}
 
       }
 
   if(theTrack->GetDefinition()==G4OpticalPhoton::OpticalPhotonDefinition()) //specify optical photons
     {
-      if (thePostPVname == "detector") {
-        G4double PhotTime = theTrack->GetLocalTime()/CLHEP::ns;
-        //std::cout<<"photon"<<std::endl; //sends out "photon" when things are detected. I think, In order to schekc if there are photons being seen
-        G4double x  = theTrack->GetPosition().x();
+		//G4int TrackID = theTrack->GetTrackID();
+		//G4double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
+        //G4double x  = theTrack->GetPosition().x();
+        //G4double y  = theTrack->GetPosition().y();
+        //G4double z  = theTrack->GetPosition().z();
+        //G4double Energy_photon = theTrack->GetTotalEnergy() / eV;
+        //G4double Wavelength_photon = hPlanckTimesc / Energy_photon;
+        //Step_Number = theTrack->GetCurrentStepNumber();
+        //std::ofstream myfile10("DETAILEDTRACKING3x315.txt", std::ios_base::app);
+        //myfile10 << EventID << "," << TrackID << "," << thePostPVname << "," << x << "," << y << "," << z << "," << PhotTime << "," << Wavelength_photon  << "," << Step_Number << std::endl;
+        //myfile10.close();
+        
+		
+		
+	  //if((theTrack->GetTrackStatus() == fStopAndKill) and (thePostPVname != "detector")){
+	        //G4double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
+	        //G4double x  = theTrack->GetPosition().x();
+	        //G4double y  = theTrack->GetPosition().y();
+	        //G4double z  = theTrack->GetPosition().z();
+	        //TrackID = theTrack->GetTrackID();
+	        //G4double Energy_photon = theTrack->GetTotalEnergy() / eV;
+	        //G4double Wavelength_photon = hPlanckTimesc / Energy_photon;
+	        //Step_Number = theTrack->GetCurrentStepNumber();
+	        //std::ofstream myfile4("KILLED3x315.txt", std::ios_base::app);
+	        //myfile4 << EventID << "," << x << "," << y << "," << z << "," << PhotTime << "," << Wavelength_photon  << "," << Step_Number << "," << procName << std::endl;
+	        //myfile4.close();
+      //}
+      //if((theTrack->GetTrackStatus() == fStopAndKill) and (thePostPVname == "detector")){
+	        //G4double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
+	        //G4double x  = theTrack->GetPosition().x();
+	        //G4double y  = theTrack->GetPosition().y();
+	        //G4double z  = theTrack->GetPosition().z();
+	        //TrackID = theTrack->GetTrackID();
+	        //G4double Energy_photon = theTrack->GetTotalEnergy() / eV;
+	        //G4double Wavelength_photon = hPlanckTimesc / Energy_photon;
+	        //Step_Number = theTrack->GetCurrentStepNumber();
+	        //std::ofstream myfile5("DETECTORLOSS3x315.txt", std::ios_base::app);
+	        //myfile5 << EventID << "," << x << "," << y << "," << z << "," << PhotTime << "," << Wavelength_photon  << "," << Step_Number << "," << procName << std::endl;
+	        //myfile5.close();
+      //}
+	  //if(theTrack->GetCurrentStepNumber() == 1){
+	        //G4double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
+	        //G4double x  = thePrePoint->GetPosition().x();
+	        //G4double y  = thePrePoint->GetPosition().y();
+	        //G4double z  = thePrePoint->GetPosition().z();
+	        //TrackID = theTrack->GetTrackID();
+	        //G4String process = theTrack->GetCreatorProcess()->GetProcessName();
+	        //G4double Energy_photon = theTrack->GetTotalEnergy() / eV;
+	        //G4double Wavelength_photon = hPlanckTimesc / Energy_photon;
+	        //std::ofstream myfile6("PRODUCED3x315.txt", std::ios_base::app);
+	        //myfile6 << EventID << "," << x << "," << y << "," << z << "," << PhotTime  << "," << Wavelength_photon << std::endl;
+	        //myfile6.close();
+      //}
+     		
+      if ((thePostPVname == "detector") & (theTrack->GetTrackStatus() != fStopAndKill)) {
+        G4double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
+        G4double photX  = theTrack->GetPosition().x();
+        G4double photY = theTrack->GetPosition().y();
+        G4double photZ = theTrack->GetPosition().z();
+        G4double Energy_photon = theTrack->GetTotalEnergy() / eV;
+        G4double Wavelength_photon = hPlanckTimesc / Energy_photon;
+        TrackID = theTrack->GetTrackID();
 
 
+       //if(theTrack->GetCreatorProcess()->GetProcessName()=="Cerenkov"){
 
-       if(theTrack->GetCreatorProcess()->GetProcessName()=="Cerenkov"){
+        //DetectedCerenCounter++;
+        //G4double Time1 = theTrack->GetGlobalTime()/CLHEP::ns;
+        ////std::ofstream myfile7("CerenData.txt", std::ios_base::app);
+        ////myfile7 << EventID <<  "," << DetectedCerenCounter << "," << Time1 << "," << copyNumber << std::endl;
 
-        DetectedCerenCounter++;
-        G4double Time1 = theTrack->GetLocalTime()/CLHEP::ns;
-        //std::ofstream myfile5("CerenData.txt", std::ios_base::app);
-        //myfile5 << EventID <<  "," << DetectedCerenCounter << "," << Time1 << "," << copyNumber << std::endl;
-
-      }
+      //}
     //  if( > 1){
       //  std::ofstream myfile8("COMPT_PHOT.txt", std::ios_base::app);
    	  // myfile8 << EventID << "," << copyNumber << "," << x << "," << PhotTime << std::endl;
@@ -184,9 +244,9 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
 
 
      // Important according to Kyle
-	   std::ofstream myfile3("PHOT_15_40x3_pix_time_g5.txt", std::ios_base::app);
-	   myfile3 << EventID << "," << copyNumber << "," << x << "," << PhotTime << std::endl;
-	   myfile3.close();
+	   std::ofstream myfile9("3x315.txt", std::ios_base::app);
+	   myfile9 << EventID << "," << copyNumber << "," << photX << "," << photY << "," << photZ << "," << PhotTime << "," << Wavelength_photon << std::endl;
+	   myfile9.close();
      G4SDManager* SDman = G4SDManager::GetSDMpointer();
      G4String SDname="TrackerChamberSD";
      PETTrackerSD* mppcSD = (PETTrackerSD*)SDman->FindSensitiveDetector(SDname);
