@@ -238,7 +238,7 @@ G4VPhysicalVolume * PETDetectorConstruction::Construct() {
     //The size of each crystal
     G4double cryst_dx = (3.005)*mm, cryst_dy = (3.005)*mm, cryst_dz = 30*mm;
     //The size of each SiPM pixel
-    G4double det_dx = (1-0.0)*mm, det_dy = (1-0.0)*mm, det_dz = 1*mm;
+    G4double det_dx = (3.005-0.0)*mm, det_dy = (3.005-0.0)*mm, det_dz = 1*mm;
     //The thickness of the separator between each crystal
     G4double sep_thickness = 0.195*mm;
     //The gap between SiPM pixels. Should be exactly 0.2mm.
