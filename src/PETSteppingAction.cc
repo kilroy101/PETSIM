@@ -5,6 +5,7 @@
 #include "G4Run.hh"
 #include "G4Step.hh"
 #include "G4Track.hh"
+#include "G4INCLRandom.hh"
 #include "G4StepPoint.hh"
 #include "G4TrackStatus.hh"
 #include "G4VPhysicalVolume.hh"
@@ -250,6 +251,7 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
       }
 
       if ((thePostPVname == "detector") & (theTrack->GetTrackStatus() != fStopAndKill)) {
+		double sipmResolution = 100; //Resolution of the SiPMs, in ps FWHM
         double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
         G4double photX  = theTrack->GetPosition().x();
         G4double photY = theTrack->GetPosition().y();
@@ -259,18 +261,18 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
         TrackID = theTrack->GetTrackID();
         G4double Length = theTrack->GetTrackLength();
         //parameters can be adjusted to accurately count the inner and outer detectors
-        if(copyNumber == 0){
+        if(copyNumber % 1000 < 100){
         (*fDetCountI)++;
         int nthI = *fDetCountI;
         if(nthI == 5){
-        *fPhotTimeI = PhotTime;
+        *fPhotTimeI = PhotTime + G4INCL::Random::gauss(sipmResolution/2.355/1000);
         }
         }
-        if(copyNumber == 1){
+        if(copyNumber % 1000 >= 100){
         (*fDetCountO)++;
         int nthO= *fDetCountO;
         if(nthO == 5){
-        *fPhotTimeO = PhotTime;
+        *fPhotTimeO = PhotTime + G4INCL::Random::gauss(sipmResolution/2.355/1000);
         }
         }
 
@@ -294,9 +296,9 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
 
 
      // Important according to Kyle
-	   // std::ofstream myfile9("3x315.txt", std::ios_base::app);
-	   // myfile9 << EventID << "," << copyNumber << "," << photX << "," << photY << "," << photZ << "," << PhotTime << "," << Length << "," << TrackID << std::endl;
-	   // myfile9.close();
+	    std::ofstream myfile9("3x315.txt", std::ios_base::app);
+	    myfile9 << EventID << "," << copyNumber << "," << photX << "," << photY << "," << photZ << "," << PhotTime << "," << Length << "," << TrackID << *fDetCountI << std::endl;
+	    myfile9.close();
      G4SDManager* SDman = G4SDManager::GetSDMpointer();
      G4String SDname="TrackerChamberSD";
      PETTrackerSD* mppcSD = (PETTrackerSD*)SDman->FindSensitiveDetector(SDname);
