@@ -296,9 +296,9 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
 
 
      // Important according to Kyle
-	    std::ofstream myfile9("3x315.txt", std::ios_base::app);
-	    myfile9 << EventID << "," << copyNumber << "," << photX << "," << photY << "," << photZ << "," << PhotTime << "," << Length << "," << TrackID << *fDetCountI << std::endl;
-	    myfile9.close();
+	    //std::ofstream myfile9("3x315.txt", std::ios_base::app);
+	    //myfile9 << EventID << "," << copyNumber << "," << photX << "," << photY << "," << photZ << "," << PhotTime << "," << Length << "," << TrackID << std::endl;
+	    //myfile9.close();
      G4SDManager* SDman = G4SDManager::GetSDMpointer();
      G4String SDname="TrackerChamberSD";
      PETTrackerSD* mppcSD = (PETTrackerSD*)SDman->FindSensitiveDetector(SDname);
