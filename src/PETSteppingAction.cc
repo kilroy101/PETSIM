@@ -38,6 +38,8 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <random>
+
 
 // class PETEventAction evtac;
 
@@ -250,9 +252,16 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
 	        // myfile6.close();
       }
 
-      if ((thePostPVname == "detector") & (theTrack->GetTrackStatus() != fStopAndKill)) {
+       if ((thePostPVname == "detector") & (theTrack->GetTrackStatus() != fStopAndKill)) {
 		double sipmResolution = 100; //Resolution of the SiPMs, in ps FWHM
-        double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
+		// random device class instance, source of 'true' randomness for initializing random seed
+		std::random_device rd; 
+		// Mersenne twister PRNG, initialized with seed from previous random device instance
+		std::mt19937 gen(rd()); 
+		// instance of class std::normal_distribution with specific mean and stddev
+		std::normal_distribution<float> d(sipmResolution/1000, sipmResolution/1000/2.355); 
+		
+        G4double PhotTime = theTrack->GetGlobalTime()/CLHEP::ns;
         G4double photX  = theTrack->GetPosition().x();
         G4double photY = theTrack->GetPosition().y();
         G4double photZ = theTrack->GetPosition().z();
@@ -265,16 +274,16 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
         (*fDetCountI)++;
         int nthI = *fDetCountI;
         if(nthI == 5){
-        *fPhotTimeI = PhotTime + G4INCL::Random::gauss(sipmResolution/2.355/1000);
+        *fPhotTimeI = PhotTime + d(gen);
         }
         }
         if(copyNumber % 1000 >= 100){
         (*fDetCountO)++;
         int nthO= *fDetCountO;
         if(nthO == 5){
-        *fPhotTimeO = PhotTime + G4INCL::Random::gauss(sipmResolution/2.355/1000);
+        *fPhotTimeO = PhotTime + d(gen);
         }
-        }
+	    }
 
 
        //if(theTrack->GetCreatorProcess()->GetProcessName()=="Cerenkov"){
