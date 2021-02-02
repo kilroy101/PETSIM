@@ -279,14 +279,14 @@ void PETSteppingAction::UserSteppingAction(const G4Step * theStep) {
         auto Thread_Id = G4Threading::G4GetThreadId();
         if(copyNumber == 0){
         (*(fDetCountI+Thread_Id))++;
-        int nthI = *fDetCountI;
+        int nthI = *(fDetCountI+Thread_Id);
         if(nthI == 5){
         *(fPhotTimeI+Thread_Id) = PhotTime + d(gen);
         }
         }
         if(copyNumber == 1){
       (*(fDetCountO+Thread_Id))++;
-        int nthO= *fDetCountO;
+        int nthO= *(fDetCountO+Thread_Id);
         if(nthO == 5){
         *(fPhotTimeO+Thread_Id) = PhotTime + d(gen);
         // G4MUTEXUNLOCK(&mutex);
